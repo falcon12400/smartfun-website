@@ -1,0 +1,6 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#fff8ee;display:flex;flex-wrap:wrap;gap:20px;padding:20px;align-items:flex-end">
+<script type="module">
+import { kidSVG } from "./kid-art.js";
+const C=[{shirt:"#ff8a65",pants:"#3f51b5",hair:"#4e342e"},{shirt:"#ffca28",pants:"#26a69a",hair:"#212121",style:1},{shirt:"#66bb6a",pants:"#8d6e63",hair:"#6d4c41",stripe:"#fff"},{shirt:"#4fc3f7",pants:"#ef6c00",hair:"#3e2723",style:2}];
+["front","arms","side","reach","throw","sit","crawl","adult"].forEach((p,i)=>{const k=kidSVG(p,C[i%4]);const d=document.createElement("div");d.innerHTML=k.svg;d.firstChild.style.width=k.w*1.3+"px";d.firstChild.style.height=k.h*1.3+"px";document.body.append(d)});
+</script>

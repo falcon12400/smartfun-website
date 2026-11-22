@@ -1,0 +1,14 @@
+<!doctype html><meta charset="utf-8">
+<!-- 草稿（積木版）與插畫重繪對照。用法：開 _tools/compare.html 截圖 1800x1300 -->
+<style>body{margin:0;padding:20px 24px;background:#fffaf3;font-family:"Microsoft JhengHei",sans-serif;color:#4a3328}
+h1{font-size:24px;margin:0 0 4px}p{margin:0 0 14px;color:#9a7a62}
+.g{display:grid;grid-template-columns:90px repeat(8,1fr);gap:6px;align-items:center}
+.g b{font-size:15px}.g span{font-size:13px;text-align:center}.g img{width:100%;display:block;background:#fff;border-radius:8px}</style>
+<h1>教案示意圖：草稿 → 插畫重繪</h1><p>草稿＝積木版（構圖、隊形、路線）；重繪＝同一構圖換成插畫人物、手繪路線與地墊</p>
+<div class="g" id="g"></div>
+<script>
+const n=["鑽山洞","彩虹梯","搖搖船","S 型小路","繞柱子","套圈圈","接力過橋","一起蓋橋"], g=document.getElementById("g");
+g.innerHTML="<i></i>"+n.map((t,i)=>`<span>${i+1}. ${t}</span>`).join("")
+ +"<b>草稿</b>"+n.map((t,i)=>`<img src="../assets/plays/rock-${i+1}.png">`).join("")
+ +"<b>重繪</b>"+n.map((t,i)=>`<img src="../assets/plays/art/rock-${i+1}.png">`).join("");
+</script>
