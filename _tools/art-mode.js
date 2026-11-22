@@ -1,6 +1,7 @@
 // 插畫重繪（s=art）：教具用 3D 插畫上色，人物換成 kid-art.js 的手繪插畫貼圖，箭頭與地墊用 SVG 手繪。
 // play-illustrations.html 在 s=art 時呼叫 setupArt() 取代人偶與箭頭，場景擺好後再呼叫 build()。
 import { kidSVG } from "./kid-art.js";
+import { paintedBackground, paperOverlay } from "./painted-bg.js";
 
 const KID_ART = {
   0xff8a65: { shirt: "#ff8a65", pants: "#3f51b5", hair: "#4e342e" },
@@ -13,7 +14,7 @@ const KID_ART = {
 const POSE = { stand: "front", arms: "arms", reach: "reach", throw: "throw", sit: "sit", crawl: "crawl" };
 const HEIGHT = { front: 78, arms: 78, reach: 78, throw: 78, side: 78, sit: 66, crawl: 30, adult: 112 };
 
-export function setupArt({ THREE, scene, cam, ctl, renderer }) {
+export function setupArt({ THREE, scene, cam, ctl, renderer, ghibli = false }) {
   const kids = [], arrows = [];
   const kid = ({ x = 0, y = 0, z = 0, face = 0, color = 0xff8a65, pose = "stand", s = 1 }) =>
     kids.push({ x, y, z, face, s, ap: color === 0x37474f ? "adult" : (POSE[pose] || "front"), opt: KID_ART[color] || KID_ART[0xff8a65] });
@@ -30,15 +31,16 @@ export function setupArt({ THREE, scene, cam, ctl, renderer }) {
     for (const m of meshes) {
       const col = m.material.color.clone(), op = m.material.opacity;
       m.material = new THREE.MeshToonMaterial({ color: col, gradientMap: grad, transparent: op < 1, opacity: op });
-      const hm = new THREE.MeshBasicMaterial({ color: col.clone().multiplyScalar(.42), side: THREE.BackSide });
+      const hm = new THREE.MeshBasicMaterial({ color: col.clone().multiplyScalar(ghibli ? .6 : .42), side: THREE.BackSide });
       const sc = m.getWorldScale(new THREE.Vector3()).x || 1;
-      hm.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace("#include <begin_vertex>", `#include <begin_vertex>\ntransformed += normalize(normal) * ${(0.75 / sc).toFixed(2)};`); };
+      hm.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace("#include <begin_vertex>", `#include <begin_vertex>\ntransformed += normalize(normal) * ${((ghibli ? .45 : .75) / sc).toFixed(2)};`); };
       m.add(new THREE.Mesh(m.geometry, hm));
     }
     // 人物：手繪插畫貼圖（Sprite，會被教具正確遮擋）
     await Promise.all(kids.map(async k => {
       const a = proj(k.x, k.y, k.z), b = proj(k.x + Math.sin(k.face) * 10, k.y, k.z + Math.cos(k.face) * 10);
       const art = kidSVG(k.ap, { ...k.opt, flip: b[0] < a[0] });
+      if (ghibli) art.svg = art.svg.replaceAll("#4a3328", "#7a5540").replaceAll('stroke-width="3"', 'stroke-width="2.2"');
       const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(art.svg); await img.decode();
       const c = document.createElement("canvas"); c.width = art.w * 4; c.height = art.h * 4; c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
       const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
@@ -56,7 +58,9 @@ export function setupArt({ THREE, scene, cam, ctl, renderer }) {
     const t = ctl.target, ring = [];
     for (let k = 0; k <= 64; k++) { const an = k / 64 * Math.PI * 2, r = 128 + 8 * Math.sin(an * 3) + 5 * Math.cos(an * 5); ring.push(proj(t.x + r * Math.cos(an), 0, t.z + r * .85 * Math.sin(an))); }
     const star = (x, y, r) => `<path d="M${x},${y - r * 2} l${r * .5},${r * 1.5} l${r * 1.5},${r * .5} l${-r * 1.5},${r * .5} l${-r * .5},${r * 1.5} l${-r * .5},${-r * 1.5} l${-r * 1.5},${-r * .5} l${r * 1.5},${-r * .5} Z" fill="#ffc23d" opacity=".75"/>`;
-    layer(-1).innerHTML = `<defs><radialGradient id="mg" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#fff0dc"/><stop offset="1" stop-color="#ffdcb8"/></radialGradient>
+    const vd = new THREE.Vector3().subVectors(ctl.target, cam.position), pitch = Math.atan2(-vd.y, Math.hypot(vd.x, vd.z));
+    const horizon = Math.min(H * .55, Math.max(H * .1, H / 2 - Math.tan(pitch) / Math.tan(cam.fov * Math.PI / 360) * H / 2));
+    if (ghibli) layer(-1).innerHTML = paintedBackground(W, H, horizon); else layer(-1).innerHTML = `<defs><radialGradient id="mg" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#fff0dc"/><stop offset="1" stop-color="#ffdcb8"/></radialGradient>
       <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".02" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="7"/></filter></defs>
       <path d="${smooth(ring)}Z" fill="url(#mg)" filter="url(#rough)"/>
       <path d="${smooth(ring)}Z" fill="none" stroke="#f1b783" stroke-width="3" stroke-dasharray="1 11" stroke-linecap="round" filter="url(#rough)"/>
@@ -66,6 +70,7 @@ export function setupArt({ THREE, scene, cam, ctl, renderer }) {
       + arrows.map(({ pts, opt }) => { const d = smooth(pts.map(p => proj(...p))), dash = opt.dashed ? 'stroke-dasharray="1 16"' : "";
         return `<g filter="url(#hand)"><path d="${d}" fill="none" stroke="#fff" stroke-width="13" stroke-linecap="round" ${dash}/>
           <path d="${d}" fill="none" stroke="#ff5a3c" stroke-width="6.5" stroke-linecap="round" ${dash} ${opt.dashed ? 'opacity=".85"' : ""} marker-end="url(#ah)" ${opt.both ? 'marker-start="url(#ah)"' : ""}/></g>`; }).join("");
+    if (ghibli) layer(6).innerHTML = paperOverlay(W, H);
   }
   return { kid, arrow, build };
 }

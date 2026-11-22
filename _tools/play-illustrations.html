@@ -110,7 +110,7 @@ const gz = d.L / 2 - d.T / 5 * 2 + d.T / 2;
 
 const S = {
   1() { // 鑽山洞：拱片沿 x 立起，孩子沿 z 方向爬過
-    kid({ z: ST0 === "art" ? 16 : -4, pose: "crawl", color: KID[0] });
+    kid({ z: (ST0 === "art" || ST0 === "ghibli") ? 16 : -4, pose: "crawl", color: KID[0] });
     kid({ z: -75, color: KID[1] }); kid({ z: -105, color: KID[2] }); kid({ z: -135, color: KID[3] });
     arrow([[0, 3, -50], [0, 3, 0], [0, 3, 55]]);
     arrow([[10, 2, 62], [55, 2, 55], [70, 2, 0], [60, 2, -120], [25, 2, -158]], { dashed: true });
@@ -174,9 +174,15 @@ const S = {
   },
 };
 // s=art：人物與箭頭改由插畫模組畫
-const ART = ST0 === "art" ? setupArt({ THREE, scene, cam, ctl, renderer: v.renderer }) : null;
+const ART = (ST0 === "art" || ST0 === "ghibli") ? setupArt({ THREE, scene, cam, ctl, renderer: v.renderer, ghibli: ST0 === "ghibli" }) : null;
 if (ART) { kid = ART.kid; arrow = ART.arrow; }
 S[i]();
+if (ST0 === "ghibli") { // 壓低視角，多露天空
+  const t = ctl.target, d = cam.position.clone().sub(t), flat = Math.hypot(d.x, d.z), dist = d.length() * 1.05;
+  const el = .2, nx = d.x / flat, nz = d.z / flat;
+  cam.position.set(t.x + nx * dist * Math.cos(el), t.y + dist * Math.sin(el), t.z + nz * dist * Math.cos(el));
+  ctl.target.y += 38; ctl.update();
+}
 
 // ---------- 風格 ----------
 // s= 空白：立體公仔（預設）｜toon 卡通平塗｜line 線稿｜plan 俯視站位｜blue 藍圖
