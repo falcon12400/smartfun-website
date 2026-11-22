@@ -75,6 +75,29 @@ export function kidSVG(pose, o = {}) {
     if (pose === "throw") b += limb([[cx + 2, 108], [cx + 26, 96], [cx + 48, 70]], 12, shirt) + hand(cx + 51, 65);
     return { svg: wrap(W, H, b, flip), w: W, h: H, ax: (flip ? W - cx : cx) / W, ay: 1 - 226 / H };
   }
+  if (pose === "hold") { // 雙手往前平舉拿東西（手在 cx+66, 120）
+    const W = 170, H = 232, cx = 62;
+    let b = limb([[cx - 4, 160], [cx - 12, 190], [cx - 14, 214]], 15, SKIN) + shoe(cx - 12, 226);
+    b += limb([[cx + 4, 160], [cx + 12, 190], [cx + 16, 214]], 15, SKIN) + shoe(cx + 20, 226);
+    b += `<path d="M${cx - 20},146 L${cx + 20},146 L${cx + 24},176 L${cx - 24},176 Z" fill="${P}" ${S}/>`;
+    b += limb([[cx, 108], [cx + 32, 116], [cx + 62, 118]], 12, shade(shirt, .85)) + hand(cx + 66, 117);
+    b += torso(cx, 100, 40, 52, shirt, stripe);
+    b += headSide(cx + 4, 58, 40, hair, style);
+    b += limb([[cx + 4, 110], [cx + 34, 120], [cx + 64, 122]], 12, shirt) + hand(cx + 68, 122);
+    return { svg: wrap(W, H, b, flip), w: W, h: H, ax: (flip ? W - cx : cx) / W, ay: 1 - 226 / H, hand: [cx + 68, 120] };
+  }
+  if (pose === "kick") { // 側踢：支撐腳站穩、另一腳往前高踢（腳底在 cx+82, 118）
+    const W = 200, H = 232, cx = 62;
+    let b = limb([[cx - 8, 104], [cx - 30, 120], [cx - 42, 104]], 12, shade(shirt, .85)) + hand(cx - 44, 101);
+    b += limb([[cx - 4, 158], [cx - 8, 190], [cx - 8, 214]], 15, SKIN) + shoe(cx - 6, 226);
+    b += `<path d="M${cx - 22},146 L${cx + 18},144 L${cx + 26},170 L${cx - 22},176 Z" fill="${P}" ${S}/>`;
+    b += limb([[cx + 8, 156], [cx + 44, 136], [cx + 74, 120]], 15, SKIN);
+    b += `<g transform="rotate(-62 ${cx + 80} ${118})">${shoe(cx + 80, 124)}</g>`;
+    b += `<g transform="rotate(-8 ${cx} 126)">` + torso(cx, 100, 40, 52, shirt, stripe) + `</g>`;
+    b += headSide(cx - 2, 58, 40, hair, style);
+    b += limb([[cx + 2, 112], [cx + 24, 124], [cx + 34, 110]], 12, shirt) + hand(cx + 36, 106);
+    return { svg: wrap(W, H, b, flip), w: W, h: H, ax: (flip ? W - cx : cx) / W, ay: 1 - 226 / H, foot: [cx + 84, 118] };
+  }
   if (pose === "sit") {
     const W = 160, H = 212, cx = 58, seat = 150;
     let b = limb([[cx + 6, seat - 4], [cx + 40, seat - 2], [cx + 46, seat + 34]], 15, P) + shoe(cx + 52, seat + 50);
