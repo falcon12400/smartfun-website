@@ -1,0 +1,226 @@
+<!doctype html>
+<!-- 玩法示意圖產生器：用 3D 模型＋簡化人偶＋路線箭頭畫出每個玩法。
+     用法：headless Chrome 開 _tools/play-illustrations.html?i=1&s=風格 截圖 900x630（i=1..8 對應 plays.js 的順序）。
+     模型尺寸驗證後重新跑一次即可更新全部示意圖。 -->
+<html><head><meta charset="utf-8">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<style>html,body{margin:0;background:transparent}#v{width:900px;height:630px}</style></head><body><div id="v"></div>
+<script type="module">
+import { mountRocker } from "../assets/rocker3d.js";
+const i = +new URLSearchParams(location.search).get("i") || 1;
+const MODES = ["bridge","ladder","rocker","s","posts","posts","ladder","parts"];
+const v = mountRocker(document.getElementById("v"), { transparent: true, autoRotate: false, mode: MODES[i-1] });
+const { THREE, scene, cam, ctl, dims: d } = v;
+const P = Math.PI, rm = (d.R + d.r) / 2, sh = rm;
+
+// 地面圓盤
+const disc = new THREE.Mesh(new THREE.CircleGeometry(170, 64), new THREE.MeshStandardMaterial({ color: 0xf1f2f5, roughness: 1 }));
+disc.rotation.x = -P/2; disc.position.y = -0.2; disc.receiveShadow = true; // 地面圓盤先不顯示（卡片背景已有底色）
+
+const mat = (c, o = 1) => new THREE.MeshStandardMaterial({ color: c, roughness: .7, transparent: o < 1, opacity: o });
+const KID = [0xff8a65, 0xffca28, 0x66bb6a, 0x4fc3f7, 0xf48fb1, 0xba68c8];
+const SKIN = 0xffd9b8;
+function add(m, x = 0, y = 0, z = 0) { m.position.set(x, y, z); m.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } }); scene.add(m); return m; }
+// 人偶：原點在腳底，臉朝 +z
+var kid = function ({ x = 0, y = 0, z = 0, face = 0, color = KID[0], pose = "stand", s = 1 }) {
+  const g = new THREE.Group(), body = mat(color), skin = mat(SKIN);
+  const cap = (r, l, m) => new THREE.Mesh(new THREE.CapsuleGeometry(r, l, 6, 16), m);
+  const ball = (r, m) => new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), m);
+  if (pose === "crawl") {
+    const b = cap(9, 30, body); b.rotation.x = P/2; b.position.set(0, 11, 0); g.add(b);
+    const h = ball(10, skin); h.position.set(0, 16, 30); g.add(h);
+    [[-7, 14], [7, 14], [-7, -14], [7, -14]].forEach(([lx, lz]) => { const l = cap(3.2, 6, body); l.position.set(lx, 4, lz); g.add(l); });
+  } else if (pose === "sit") {
+    const b = cap(9, 18, body); b.position.y = 18; g.add(b);
+    const legs = cap(5.5, 18, body); legs.rotation.x = P/2; legs.position.set(0, 6, 14); g.add(legs);
+    const h = ball(11, skin); h.position.y = 47; g.add(h);
+    const arms = cap(3.2, 16, body); arms.rotation.x = P/2.6; arms.position.set(0, 26, 10); g.add(arms);
+  } else {
+    const b = cap(9, 34, body); b.position.y = 26; g.add(b);
+    const h = ball(11, skin); h.position.y = 63; g.add(h);
+    if (pose === "arms") { const a = cap(3.4, 46, body); a.rotation.z = P/2; a.position.y = 42; g.add(a); }
+    if (pose === "reach") { const a = cap(3.4, 22, body); a.rotation.x = P/2; a.position.set(6, 42, 14); g.add(a); }
+    if (pose === "throw") { const a = cap(3.4, 22, body); a.rotation.x = -P/5; a.position.set(9, 54, 4); g.add(a); }
+  }
+  g.scale.setScalar(s); g.rotation.y = face; return add(g, x, y, z);
+}
+// ---------- 3D 卡通小朋友（s=cartoon 時使用）：有臉、頭髮、四肢 ----------
+const HAIR = [0x4e342e, 0x212121, 0x6d4c41, 0x3e2723, 0x5d4037];
+const PANTS = [0x3f51b5, 0x26a69a, 0x8d6e63, 0xef6c00, 0x5e35b1, 0x546e7a];
+function kidCartoon({ x = 0, y = 0, z = 0, face = 0, color = KID[0], pose = "stand", s = 1 }) {
+  const ci = Math.max(0, KID.indexOf(color)), g = new THREE.Group();
+  const shirt = mat(color), skin = mat(SKIN), pants = mat(color === 0x37474f ? 0x263238 : PANTS[ci % PANTS.length]), hairM = mat(color === 0x37474f ? 0x212121 : HAIR[ci % HAIR.length]);
+  const shoe = mat(0xffffff), black = new THREE.MeshBasicMaterial({ color: 0x222222 }), pink = mat(0xff8a80);
+  const V = (a, b, c) => new THREE.Vector3(a, b, c);
+  const seg = (a, b, r, m) => { const d = b.clone().sub(a), mm = new THREE.Mesh(new THREE.CapsuleGeometry(r, Math.max(.01, d.length()), 6, 14), m);
+    mm.position.copy(a).add(b).multiplyScalar(.5); mm.quaternion.setFromUnitVectors(V(0, 1, 0), d.normalize()); g.add(mm); return mm; };
+  const ball = (p, r, m, sx = 1, sy = 1, sz = 1) => { const b = new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), m); b.position.copy(p); b.scale.set(sx, sy, sz); g.add(b); return b; };
+  function headAt(c, r = 14, dir = V(0, 0, 1)) {
+    const h = new THREE.Group(); h.position.copy(c); h.quaternion.setFromUnitVectors(V(0, 0, 1), dir.clone().normalize()); g.add(h);
+    const add2 = m => { h.add(m); return m; };
+    add2(new THREE.Mesh(new THREE.SphereGeometry(r, 32, 24), skin));
+    const hair = add2(new THREE.Mesh(new THREE.SphereGeometry(r * 1.06, 32, 24, 0, Math.PI * 2, 0, Math.PI * .52), hairM)); hair.rotation.x = -.45;
+    const fringe = add2(new THREE.Mesh(new THREE.SphereGeometry(r * .5, 16, 12), hairM)); fringe.scale.set(1.6, .55, .8); fringe.position.set(r * .2, r * .62, r * .62);
+    [-1, 1].forEach(sd => {
+      const e = add2(new THREE.Mesh(new THREE.SphereGeometry(r * .11, 12, 10), black)); e.scale.set(1, 1.35, .6); e.position.set(sd * r * .36, r * .08, r * .95); e.userData.noOutline = true;
+      const c2 = add2(new THREE.Mesh(new THREE.SphereGeometry(r * .14, 12, 10), pink)); c2.scale.set(1.3, .7, .4); c2.position.set(sd * r * .58, -r * .22, r * .8); c2.userData.noOutline = true;
+    });
+    const sm = add2(new THREE.Mesh(new THREE.TorusGeometry(r * .2, r * .04, 6, 16, Math.PI), black)); sm.rotation.z = Math.PI; sm.position.set(0, -r * .22, r * .97); sm.userData.noOutline = true;
+  }
+  if (pose === "crawl") {
+    seg(V(0, 17, -12), V(0, 19, 10), 9, shirt);
+    headAt(V(0, 26, 26), 13, V(0, .25, 1));
+    [-1, 1].forEach(sd => { seg(V(sd * 7, 18, 8), V(sd * 8, 3, 13), 3.2, shirt); ball(V(sd * 8, 2.5, 14), 3.4, skin);
+      seg(V(sd * 5, 15, -12), V(sd * 5, 3.5, -10), 4, pants); seg(V(sd * 5, 3.5, -10), V(sd * 5, 3.5, -28), 4, pants); ball(V(sd * 5, 3.5, -30), 3.8, shoe, 1, .8, 1.3); });
+  } else if (pose === "sit") {
+    seg(V(0, 6, 0), V(0, 24, 0), 9, shirt);
+    headAt(V(0, 44, 1), 14);
+    [-1, 1].forEach(sd => { seg(V(sd * 4.5, 4, 2), V(sd * 4.5, 5, 18), 4.2, pants); seg(V(sd * 4.5, 5, 18), V(sd * 4.5, -10, 21), 4, pants); ball(V(sd * 4.5, -12, 23), 4, shoe, 1, .8, 1.4);
+      seg(V(sd * 10, 22, 0), V(sd * 8, 13, 15), 3.2, shirt); ball(V(sd * 8, 12, 17), 3.4, skin); });
+  } else {
+    seg(V(0, 24, 0), V(0, 42, 0), 9.5, shirt);
+    headAt(V(0, 62, 0), 14);
+    [-1, 1].forEach(sd => { seg(V(sd * 4.5, 22, 0), V(sd * 5, 4, 0), 4.3, pants); ball(V(sd * 5, 2.5, 2), 4.2, shoe, 1, .75, 1.5); });
+    const hand = { stand: [V(-13, 25, 3), V(13, 25, 3)], arms: [V(-27, 40, 0), V(27, 40, 0)], reach: [V(-13, 25, 3), V(9, 38, 20)], throw: [V(-13, 25, 3), V(11, 62, -4)] }[pose] || [V(-13, 25, 3), V(13, 25, 3)];
+    [-1, 1].forEach((sd, k) => { seg(V(sd * 10, 41, 0), hand[k], 3.3, shirt); ball(hand[k], 3.6, skin); });
+  }
+  g.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+  g.scale.setScalar(s); g.rotation.y = face; g.position.set(x, y, z); scene.add(g); return g;
+}
+
+const ST0 = new URLSearchParams(location.search).get("s") || "";
+const _kidPeg = kid; if (ST0 === "cartoon") kid = kidCartoon;
+// 路線箭頭
+function arrow(pts, { color = 0xff5a3c, dashed = false, both = false, r = 1.8 } = {}) {
+  const curve = new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p)));
+  const m = mat(color, dashed ? .45 : 1);
+  add(new THREE.Mesh(new THREE.TubeGeometry(curve, 120, r, 10), m));
+  const head = t => { const c = new THREE.Mesh(new THREE.ConeGeometry(r * 3.2, r * 7, 16), m), p = curve.getPointAt(t), tg = curve.getTangentAt(t).multiplyScalar(t ? 1 : -1);
+    c.position.copy(p); c.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), tg.normalize()); scene.add(c); };
+  head(1); if (both) head(0);
+}
+function strip(x1, z1, x2, z2, color = 0xffffff) { const len = Math.hypot(x2 - x1, z2 - z1), m = new THREE.Mesh(new THREE.BoxGeometry(len, .4, 4), mat(color)); m.rotation.y = -Math.atan2(z2 - z1, x2 - x1); add(m, (x1 + x2) / 2, .2, (z1 + z2) / 2); }
+function ring(x, z, r, color = 0xff5a3c) { const m = new THREE.Mesh(new THREE.TorusGeometry(r, 1.2, 8, 64), mat(color, .6)); m.rotation.x = P/2; add(m, x, .6, z); }
+function hoop(x, y, z, rx = P/2, ry = 0, color = 0xff7043) { const m = new THREE.Mesh(new THREE.TorusGeometry(20, 2, 10, 48), mat(color)); m.rotation.set(rx, ry, 0); add(m, x, y, z); }
+const view = (pos, tgt) => { cam.position.set(...pos); ctl.target.set(...tgt); ctl.update(); };
+
+const hp = a => [rm * Math.cos(a), rm * Math.sin(a)], deg = x => x * P / 180;
+const gz = d.L / 2 - d.T / 5 * 2 + d.T / 2;
+
+const S = {
+  1() { // 鑽山洞：拱片沿 x 立起，孩子沿 z 方向爬過
+    kid({ z: -4, pose: "crawl", color: KID[0] });
+    kid({ z: -75, color: KID[1] }); kid({ z: -105, color: KID[2] }); kid({ z: -135, color: KID[3] });
+    arrow([[0, 3, -50], [0, 3, 0], [0, 3, 55]]);
+    arrow([[10, 2, 62], [55, 2, 55], [70, 2, 0], [60, 2, -120], [25, 2, -158]], { dashed: true });
+    view([175, 150, 160], [0, 15, -30]);
+  },
+  2() { // 彩虹梯：走在橫桿上越過拱頂，老師在旁邊牽手
+    const [x2, y2] = hp(deg(90));
+    kid({ x: 0, y: y2 + 4, face: P/2, color: KID[0], pose: "arms" });
+    kid({ x: 6, z: -62, face: 0, s: 1.4, color: 0x37474f, pose: "reach" });
+    kid({ x: -95, face: P/2, color: KID[1] }); kid({ x: -125, face: P/2, color: KID[2] });
+    arrow([[-70, 3, 0], [-40, 14, 0], [-20, 34, 0]]);
+    arrow([[14, 40, 0], [30, 28, 0], [46, 8, 0], [70, 3, 0]]);
+    view([110, 120, 210], [-15, 32, -5]);
+  },
+  3() { // 搖搖船：拱片倒放，兩人面對面坐
+    const [x0, y0] = hp(deg(18));
+    kid({ x: -x0 - 2, y: d.R - y0 + 3, face: P/2, pose: "sit", color: KID[0] });
+    kid({ x: x0 + 2, y: d.R - y0 + 3, face: -P/2, pose: "sit", color: KID[3] });
+    arrow([[-46, 30, 42], [-26, 8, 42], [0, 2, 42], [26, 8, 42], [46, 30, 42]], { both: true });
+    view([70, 110, 190], [0, 25, 0]);
+  },
+  4() { // S 型小路：沿著拱片走
+    const pt = (t, a2) => a2 ? [sh - rm * Math.cos(t), 11, rm * Math.sin(t)] : [-sh + rm * Math.cos(t), 11, -rm * Math.sin(t)];
+    const k = pt(P * .62, false); kid({ x: k[0], y: d.T, z: k[2], face: P/2 - .5, pose: "arms", color: KID[4] });
+    const pts = []; for (let t = P * .5; t >= 0; t -= P / 10) pts.push(pt(t, false)); for (let t = P / 10; t <= P + .01; t += P / 10) pts.push(pt(t, true));
+    pts.push([2 * sh + 18, 3, 6]); arrow(pts);
+    kid({ x: -2 * sh - 30, z: -10, face: P/2, color: KID[1] });
+    view([40, 210, 200], [0, 10, 0]);
+  },
+  5() { // 繞柱子：S 型繞過四根柱子
+    kid({ x: -110, z: 12, face: P/2, color: KID[2] });
+    arrow([[-90, 2, 12], [-52, 2, 22], [-25, 2, -2], [1, 2, -34], [10, 2, -10], [11, 2, 46], [30, 2, 30], [42, 2, -6], [75, 2, 20], [95, 2, 40]]);
+    view([60, 190, 210], [-5, 20, 5]);
+  },
+  6() { // 套圈圈：丟軟式呼拉圈套柱子
+    strip(-80, 100, 80, 100, 0x8d97ab);
+    kid({ x: -35, z: 118, face: P, color: KID[0], pose: "throw" });
+    kid({ x: 35, z: 118, face: P, color: KID[3] });
+    kid({ x: -70, z: 145, face: P, color: KID[1] }); kid({ x: 70, z: 145, face: P, color: KID[2] });
+    const [x1, y1] = hp(deg(54));
+    hoop(-14, 66, 64, P/2.6, .2);
+    arrow([[-30, 66, 108], [-18, 80, 70], [sh - x1, 66, y1 + 4]], { dashed: true });
+    const [x3, y3] = hp(deg(126)); hoop(sh - x3, 10, y3, P/2, 0, 0x26a69a);
+    view([60, 260, 330], [0, 25, 40]);
+  },
+  7() { // 接力過橋：走過去、繞回來拍下一位
+    const [, y2] = hp(deg(90));
+    kid({ x: 0, y: y2 + 4, face: P/2, color: KID[0], pose: "arms" });
+    kid({ x: -78, face: P/2, color: KID[0], pose: "reach" }); kid({ x: -108, face: P/2, color: KID[0] }); kid({ x: -138, face: P/2, color: KID[0] });
+    arrow([[14, 40, 0], [30, 28, 0], [46, 8, 0], [68, 3, 6]]);
+    arrow([[75, 2, 20], [60, 2, 62], [0, 2, 72], [-55, 2, 50], [-70, 2, 22]], { dashed: true });
+    view([110, 140, 210], [-25, 25, 10]);
+  },
+  8() { // 一起蓋橋：小組搬零件到指定位置
+    ring(0, -165, 40);
+    kid({ x: 30, z: 14, face: P, color: KID[1] }); kid({ x: 82, z: -12, face: -P/2, color: KID[2] });
+    kid({ x: -26, z: 52, face: -P/2, color: KID[4], pose: "reach" });
+    arrow([[44, 3, -40], [34, 3, -100], [16, 3, -145]]);
+    arrow([[-36, 3, 30], [-50, 3, -60], [-24, 3, -142]]);
+    view([170, 220, 220], [0, 10, -45]);
+  },
+};
+S[i]();
+
+// ---------- 風格 ----------
+// s= 空白：立體公仔（預設）｜toon 卡通平塗｜line 線稿｜plan 俯視站位｜blue 藍圖
+const st = new URLSearchParams(location.search).get("s") || "";
+function hull(w, col) {
+  const m = new THREE.MeshBasicMaterial({ color: col, side: THREE.BackSide });
+  m.onBeforeCompile = sh => { sh.vertexShader = sh.vertexShader.replace("#include <begin_vertex>", `#include <begin_vertex>\ntransformed += normalize(normal) * ${w.toFixed(2)};`); };
+  return m;
+}
+function applyStyle() {
+  if (!st) return;
+  const v3 = new THREE.Vector3();
+  const grad = new THREE.DataTexture(new Uint8Array([90, 170, 255]), 3, 1, THREE.RedFormat); grad.minFilter = grad.magFilter = THREE.NearestFilter; grad.needsUpdate = true;
+  const meshes = []; scene.traverse(o => { if (o.isMesh) meshes.push(o); });
+  const ink = { toon: 0x1d2433, cartoon: 0x2b2340, line: 0x111111, plan: 0x1d2433, blue: 0xffffff }[st];
+  const flatShadow = st === "toon" || st === "cartoon";
+  if (!flatShadow) v.renderer.shadowMap.enabled = false;
+  if (st === "blue") {
+    scene.background = new THREE.Color(0x1d4e9e);
+    const g = new THREE.GridHelper(600, 30, 0x5d86c8, 0x3d6ab4); g.position.y = -.3; scene.add(g);
+  }
+  for (const m of meshes) {
+    const old = m.material;
+    if (old.type === "ShadowMaterial") { if (!flatShadow) m.visible = false; continue; }
+    const hex = old.color.getHex(), isArrow = hex === 0xff5a3c, isSkin = hex === 0xffd9b8, op = old.opacity;
+    let col = hex;
+    if (st === "line") col = isArrow ? 0xff5a3c : 0xffffff;
+    if (st === "blue") col = isArrow ? 0xffd54f : (isSkin ? 0x9fbdf0 : 0x2f62b8);
+    const nm = (st === "toon" || st === "cartoon") ? new THREE.MeshToonMaterial({ color: col, gradientMap: grad }) : new THREE.MeshBasicMaterial({ color: col });
+    if (op < 1) { nm.transparent = true; nm.opacity = op; }
+    m.material = nm;
+    if (isArrow || m.userData.noOutline) { if (m.userData.noOutline) m.material = old; continue; }
+    // 外框：背面放大（輪廓）＋銳角邊線（拱片分層、柱子條紋）
+    const s = m.getWorldScale(v3).x || 1;
+    const o = new THREE.Mesh(m.geometry, hull((st === "line" ? 1.1 : .9) / s, ink)); m.add(o);
+    const e = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, 28), new THREE.LineBasicMaterial({ color: ink, transparent: st === "blue", opacity: st === "blue" ? .8 : 1 })); m.add(e);
+  }
+  if (st === "plan") { // 正上方往下看
+    // 自動取景：把所有看得見的東西（不含地面）框進畫面
+    const box = new THREE.Box3();
+    scene.children.forEach(o => { if (o.isMesh && o.material.type === "ShadowMaterial") return; if (o.isLight) return;
+      const bb = new THREE.Box3().setFromObject(o); if (o.scale.x > .01 && isFinite(bb.min.x)) box.union(bb); });
+    const c = box.getCenter(new THREE.Vector3()), sz = box.getSize(new THREE.Vector3());
+    cam.fov = 30; cam.updateProjectionMatrix(); ctl.maxDistance = 3000;
+    const half = Math.max(sz.z / 2, sz.x / 2 / cam.aspect) * 1.15, h = half / Math.tan(cam.fov * Math.PI / 360) + box.max.y;
+    cam.position.set(c.x, h, c.z + .01); ctl.target.set(c.x, 0, c.z); ctl.update(); window.DBG = [c.x, c.z, sz.x, sz.y, sz.z, h].map(n => n.toFixed(0)).join(",");
+  }
+}
+applyStyle();
+document.title = "ready " + (window.DBG || "");
+</script></body></html>

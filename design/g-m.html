@@ -1,0 +1,57 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--coral:#e8663d;--orange:#f2874f;--sun:#ffc23d;--cream:#fff1de;--peach:#ffe4d2;--brown:#5a3b2a}
+body{width:100%;max-width:480px;margin:0 auto;font-family:"Noto Sans TC",sans-serif;color:#4a352a;background:#fff8ee;padding-bottom:30px;position:relative}
+.hf{font-family:"Huninn","Noto Sans TC",sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;height:62px;padding:0 18px}
+.logo b{display:block;font-family:"Huninn";font-size:24px;color:var(--coral);line-height:1}.logo small{font-size:10px;color:#f29a3a;font-weight:900;letter-spacing:2px}
+.hb{display:flex;gap:10px;align-items:center}.hb a{background:var(--coral);color:#fff;border-radius:20px;padding:7px 14px;font-weight:700;font-size:13px}.hb span{font-size:22px}
+.stage{position:relative;height:330px;margin-top:4px}
+.blob{position:absolute;left:14px;right:14px;top:10px;bottom:20px;background:var(--peach);border-radius:46% 54% 42% 58% / 52% 40% 60% 48%}
+.b2{position:absolute;width:86px;height:86px;right:18px;top:0;background:var(--sun);border-radius:50%}
+.b3{position:absolute;width:56px;height:56px;left:16px;bottom:16px;background:#ff9a76;border-radius:50%}
+.ph{position:absolute;left:50%;margin-left:-145px;top:34px;width:290px;height:260px;border-radius:30px;overflow:hidden;border:8px solid #fff;transform:rotate(-3deg);box-shadow:0 20px 34px rgba(200,90,40,.25)}.ph img{width:100%;height:100%;object-fit:cover}
+.spin{position:absolute;right:28px;bottom:18px;background:#fff;border-radius:20px;padding:8px 14px;font-weight:700;color:#d9552e;font-size:13px;box-shadow:0 6px 14px rgba(0,0,0,.08)}
+.info{padding:6px 22px 30px}
+.pill{display:inline-block;background:var(--sun);color:#5a3d00;font-weight:900;font-size:12px;padding:4px 12px;border-radius:14px}
+h1{font-family:"Huninn";font-size:44px;color:#3a2a20;margin:8px 0 2px}
+.sub{font-family:"Huninn";font-size:18px;color:var(--coral);margin-bottom:10px}
+.lead{font-size:15px;line-height:1.85;color:#7a6050}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.f{background:#fff;border-radius:18px;padding:12px;display:flex;gap:10px;align-items:center;box-shadow:0 4px 12px rgba(150,90,40,.08)}
+.f i{font-style:normal;width:38px;height:38px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:19px;background:var(--peach)}
+.f small{display:block;color:#b09888;font-size:10px}.f b{font-size:13px}
+.wave{display:block;width:100%;height:46px}
+.plays{background:linear-gradient(180deg,#f2874f,#ec7448);padding:4px 0 36px}
+.h2{text-align:center;color:#fff}.h2 h2{font-family:"Huninn";font-size:34px}.h2 h2 span{color:#fff3b0}.h2 p{opacity:.9;font-size:13px}
+.fil{display:flex;gap:8px;margin:18px 0 22px;padding:0 18px;overflow:hidden;white-space:nowrap}
+.fil span{background:rgba(255,255,255,.18);color:#fff;border-radius:20px;padding:8px 16px;font-weight:700;font-size:13px}.fil .on{background:#fff;color:#d9552e}
+.c{background:#fff;border-radius:28px;padding:12px 12px 18px;margin:0 18px 16px;position:relative}
+.c .im{border-radius:20px;overflow:hidden;height:190px}.c .im img{width:100%;height:100%;object-fit:cover}
+.c .n{position:absolute;top:22px;left:22px;width:38px;height:38px;border-radius:50%;background:var(--sun);color:#5a3d00;font-family:"Huninn";font-size:18px;display:flex;align-items:center;justify-content:center;border:3px solid #fff}
+.c .tm{position:absolute;top:24px;right:24px;background:rgba(255,255,255,.92);color:#d9552e;font-weight:900;font-size:12px;padding:5px 10px;border-radius:14px}
+.c h3{font-family:"Huninn";font-size:22px;margin:14px 6px 6px;color:#3a2a20}
+.tg{display:flex;gap:5px;flex-wrap:wrap;margin:0 6px}.tg span{font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;background:var(--cream);color:#9a5a2a}.tg .t{background:#ffe0d6;color:#c0392b}.tg .w{background:#fff1cc;color:#8a5a00}
+.c p{margin:10px 6px 0;color:#8a7060;line-height:1.7;font-size:14px}
+.c .bt{display:flex;gap:8px;margin:14px 6px 0}.c .bt a{flex:1;text-align:center;border-radius:24px;padding:10px;font-weight:900;font-size:14px}.c .bt .y{background:var(--sun);color:#5a3d00}.c .bt .g{background:#f6efe6}
+.more{display:block;margin:6px 18px 0;text-align:center;background:#fff;color:#d9552e;font-weight:900;border-radius:24px;padding:13px}
+.rel{padding:30px 0 20px}.rel h2{font-family:"Huninn";font-size:26px;text-align:center;margin-bottom:16px}.rel h2 span{color:var(--coral)}
+.rs{display:flex;gap:12px;overflow:hidden;padding-left:18px}.ri{flex:0 0 140px;background:#fff;border-radius:22px;padding:12px;box-shadow:0 5px 14px rgba(150,90,40,.08);text-align:center}.ri img{width:100%;height:100px;object-fit:contain;background:var(--cream);border-radius:16px;padding:8px}.ri b{display:block;margin-top:8px;font-family:"Huninn";font-size:15px}
+.fab{position:fixed;right:16px;bottom:22px;background:#06c755;color:#fff;font-weight:900;border-radius:30px;padding:14px 20px;box-shadow:0 10px 20px rgba(6,199,85,.35);font-size:15px}
+</style></head><body><div style="background:#fff3c4;color:#6b5400;font-size:12px;text-align:center;padding:5px">設計稿（畫面示意，按鈕不能按） <a href="./" style="color:inherit">回設計稿</a></div>
+<header><div class="logo"><b>聰明動</b><small>SMART FUN</small></div><div class="hb"><a>LINE</a><span>☰</span></div></header>
+<div class="stage"><div class="blob"></div><div class="b2"></div><div class="b3"></div><div class="ph"><img src="img/hero.jpg"></div><div class="spin">↻ 轉轉看 3D</div></div>
+<div class="info"><span class="pill">⭐ 招牌教具</span><h1>聰明搖滾圈</h1><div class="sub">一套拱片，變出一整個學期的遊戲</div>
+<p class="lead">立起來是山洞、倒過來是搖搖船、平放是彎彎小路。</p>
+<div class="facts"><div class="f"><i>🎯</i><div><small>訓練能力</small><b>平衡・核心</b></div></div><div class="f"><i style="background:#fff1cc">🧒</i><div><small>適合年齡</small><b>3–6 歲</b></div></div><div class="f"><i style="background:#ffe0d6">🧩</i><div><small>零件</small><b>拱片2・柱子5</b></div></div><div class="f"><i style="background:#ffeacc">🎲</i><div><small>玩法</small><b>8 種</b></div></div></div></div>
+<svg class="wave" viewBox="0 0 390 46" preserveAspectRatio="none"><path d="M0,30 C80,0 160,46 240,24 C300,8 350,30 390,16 L390,46 L0,46 Z" fill="#f2874f"/></svg>
+<section class="plays"><div class="h2"><h2>怎麼<span>玩</span>？</h2><p>挑一個今天想玩的</p></div>
+<div class="fil"><span class="on">全部</span><span>排隊</span><span>手具雙人</span><span>團體</span><span>競賽</span></div>
+<div class="c"><div class="im"><img src="img/hero.jpg"></div><span class="n">1</span><span class="tm">5 分鐘</span><h3>鑽山洞</h3><div class="tg"><span class="t">排隊</span><span>小幼</span><span>中大</span></div><p>拱片立起來就是一座山洞，一個接一個爬過去！</p><div class="bt"><a class="y">看擺法</a><a class="g">完整玩法</a></div></div>
+<div class="c"><div class="im"><img src="img/a3.png" style="object-position:center 60%"></div><span class="n">3</span><span class="tm">5 分鐘</span><h3>搖搖船</h3><div class="tg"><span class="t">手具雙人</span><span>小幼</span><span class="w">⚠ 地面要平</span></div><p>兩個人面對面坐好，「前～後～」一起搖起來。</p><div class="bt"><a class="y">看擺法</a><a class="g">完整玩法</a></div></div>
+<a class="more">看全部 8 種玩法 ↓</a></section>
+<section class="rel"><h2>一起玩的<span>好朋友</span></h2><div class="rs"><div class="ri"><img src="img/p04.png"><b>半圓平衡柱</b></div><div class="ri"><img src="img/p08.png"><b>平衡搖擺板</b></div><div class="ri"><img src="img/p06.png"><b>圓形平衡盤</b></div></div></section>
+<div class="fab">💬 LINE 詢問</div>
+</body></html>

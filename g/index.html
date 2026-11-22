@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>聰明動 SMART FUN｜G 溫暖教育品牌</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+:root{--teal:#d9552e;--coral:#f2874f;--sun:#ffc23d;--accent:#e8663d;--accent-ink:#fff;--radius:18px}
+body{background:#fff8ee;color:#4a352a}
+.wrap{max-width:1280px;margin:0 auto;padding:0 48px}
+header{position:sticky;top:0;z-index:10;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:84px}
+.logo{line-height:1.05}.logo b{display:block;font-size:30px;color:var(--teal);letter-spacing:2px}.logo small{font-size:14px;color:var(--coral);font-weight:900;letter-spacing:3px}
+nav{display:flex;gap:36px;font-size:17px;align-items:center}nav a:hover{color:var(--teal)}
+.line{background:var(--teal);color:#fff;border-radius:30px;padding:11px 24px;font-weight:700}
+.menu{display:none;font-size:28px}
+.hero{position:relative;background:#fbf6ee;overflow:hidden}
+.hero .bg{position:absolute;right:0;top:0;height:100%;width:62%;object-fit:cover;object-position:left center}
+.hero .fade{position:absolute;inset:0;background:linear-gradient(90deg,#fbf6ee 38%,rgba(251,246,238,.85) 48%,rgba(251,246,238,0) 66%)}
+.hero .wrap{position:relative;padding-top:96px;padding-bottom:110px}
+.hero h1{font-size:clamp(36px,5vw,68px);line-height:1.3;font-weight:900;color:#2b2b2b;letter-spacing:4px}
+.hero h1 .c{color:var(--coral)}.hero h1 .t{color:var(--teal)}
+.hero p{margin-top:22px;font-size:19px;line-height:1.8;color:#444;max-width:520px;letter-spacing:1px}
+.btns{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap}
+.btns a{padding:15px 30px;border-radius:40px;font-weight:700;font-size:17px}
+.b1{background:var(--coral);color:#fff;box-shadow:0 8px 18px rgba(232,102,61,.3)}.b2{border:2px solid var(--teal);color:var(--teal);background:#fff}
+.feat{background:#fff1de;padding:40px 0}
+.feat .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feat .f{background:#fff;border-radius:18px;padding:26px;display:flex;gap:18px;align-items:center;box-shadow:0 4px 14px rgba(200,90,40,.08)}
+.feat .ic{flex:0 0 72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff}
+.feat h3{font-size:20px;letter-spacing:2px}.feat p{font-size:14px;color:#666;margin-top:6px;line-height:1.7}
+.sec{padding:72px 0}
+.title{text-align:center}.title h2{font-size:34px;color:#2b2b2b;letter-spacing:3px}.title h2 span{color:var(--teal)}.title p{color:#888;margin-top:8px}
+.filters{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:28px 0 36px}
+.filters button{padding:9px 22px;border-radius:30px;background:#f3f3f3;font-size:15px;transition:.2s}
+.filters button.on{background:var(--teal);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.card{background:#fff;border:2px solid #f1ece4;border-radius:22px;padding:18px 18px 22px;cursor:pointer;transition:.2s;position:relative}
+.card:hover{border-color:var(--sun);transform:translateY(-4px)}
+.card .im{background:#fbf6ee;border-radius:16px;padding:12px}.card img{width:100%;aspect-ratio:1;object-fit:contain}
+.card h3{font-size:18px;margin-top:14px}.card p{font-size:13px;color:#888;margin-top:4px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .tag{position:absolute;top:28px;left:28px;background:var(--sun);color:#5a3d00;font-size:12px;font-weight:700;padding:3px 10px;border-radius:12px}
+.star{position:absolute;top:28px;right:28px;background:var(--coral);color:#fff;font-size:12px;padding:3px 10px;border-radius:12px}
+.trust{border-top:1px solid #eee;border-bottom:1px solid #eee}.trust .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-top:28px;padding-bottom:28px}
+.trust div{display:flex;gap:12px;align-items:center;font-size:14px;color:#666}.trust b{display:block;color:#333;font-size:16px}.trust em{font-style:normal;font-size:34px}
+.contact{background:var(--teal);color:#fff;text-align:center;padding:64px 16px}
+.contact h3{font-size:30px;letter-spacing:3px}.contact p{opacity:.85;margin:12px 0 26px}
+.contact a{display:inline-block;background:#fff;color:var(--teal);font-weight:900;padding:15px 40px;border-radius:40px;font-size:18px}
+footer{text-align:center;color:#999;font-size:13px;padding:22px}
+@media (max-width:1000px){.grid{grid-template-columns:repeat(3,1fr)}.trust .wrap{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){
+ .wrap{padding:0 16px} header .wrap{height:64px} .logo b{font-size:24px} .logo small{font-size:11px} nav{display:none} .menu{display:block}
+ .hero .bg{position:static;width:100%;height:240px;object-position:center} .hero .fade{display:none}
+ .hero .wrap{padding-top:28px;padding-bottom:44px} .hero p{font-size:16px}
+ .feat .wrap{grid-template-columns:1fr;gap:12px} .feat .f{padding:16px} .feat .ic{flex-basis:56px;height:56px;font-size:26px}
+ .sec{padding:48px 0} .title h2{font-size:26px}
+ .filters{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:20px -16px 24px;padding:0 16px} .filters button{white-space:nowrap}
+ .grid{grid-template-columns:1fr 1fr;gap:12px} .card{padding:10px 10px 14px;border-radius:16px} .card h3{font-size:15px} .card .tag{top:16px;left:16px} .star{top:16px;right:16px}
+}
+</style></head><body>
+<div class="proto">試作版：文字與年齡為示意，首頁大圖沿用舊稿 G 的示意圖 <a href="../">回選單</a></div>
+<header><div class="wrap"><a class="logo" href="#"><b>聰明動</b><small>SMART FUN</small></a>
+<nav><a href="#catalog">教具系列</a><a href="#catalog">玩法方案</a><a href="#">教師資源</a><a href="#">課程案例</a><a class="line" href="#contact">LINE 詢問</a></nav><span class="menu">☰</span></div></header>
+
+<section class="hero"><img class="bg" src="../assets/hero-g.png" alt="聰明動教具情境"><div class="fade"></div>
+<div class="wrap"><h1>讓孩子<span class="c">愛上</span><br>每一次<span class="t">體能課</span></h1>
+<p>從教具到玩法，<br>幫老師快速完成一堂有趣又有目標的幼兒體能課。</p>
+<div class="btns"><a class="b1" href="#catalog">🛍 探索教具系列</a><a class="b2" href="#catalog">📋 瀏覽玩法方案</a></div></div></section>
+
+<section class="feat"><div class="wrap">
+<div class="f"><span class="ic" style="background:var(--teal)">🎯</span><div><h3>發展目標清楚</h3><p>每個教具對應發展指標，幫助老師精準設計課程。</p></div></div>
+<div class="f"><span class="ic" style="background:var(--sun)">📋</span><div><h3>玩法步驟完整</h3><p>提供多元玩法與分級教案，新手老師也能快速上手。</p></div></div>
+<div class="f"><span class="ic" style="background:var(--coral)">🔄</span><div><h3>課堂轉換順手</h3><p>教具輕巧耐用、組合彈性，課堂流程更流暢。</p></div></div>
+</div></section>
+
+<section class="sec" id="catalog"><div class="wrap">
+<div class="title"><h2>教具<span>系列</span></h2><p>依訓練能力挑選，點教具看詳細介紹</p></div>
+<div class="filters" id="filters"></div><div class="grid" id="grid"></div></div></section>
+
+<section class="trust"><div class="wrap">
+<div><em>🛡</em><span><b>安全安心材質</b>軟式泡棉，摔了不痛</span></div>
+<div><em>💗</em><span><b>台灣設計製作</b>老師自己設計</span></div>
+<div><em>🎓</em><span><b>幼教體能專業</b>來自到園教學現場</span></div>
+<div><em>💬</em><span><b>專人 LINE 支援</b>使用問題隨時問</span></div>
+</div></section>
+
+<section class="contact" id="contact"><h3>想讓園所也一起玩？</h3><p>教具洽詢、到園體能課合作，歡迎加入 LINE 官方帳號聊聊。</p><a href="#">加入 LINE 官方帳號</a></section>
+<footer>© 聰明動 SMART FUN</footer>
+
+<script src="../assets/plays.js"></script>
+<script src="../assets/catalog.js"></script>
+<script>
+initCatalog({grid:"#grid",filters:"#filters",card:(p,src)=>
+ `<div class="card" data-id="${p.id}"><span class="tag">${p.cat}</span>${p.star?'<span class="star">招牌</span>':''}<div class="im"><img src="${src}" alt="${p.name}" loading="lazy"></div><h3>${p.name}</h3><p>${p.desc}</p><div class="bdgs" style="justify-content:flex-start">${p.badges||""}</div></div>`});
+</script>
+</body></html>

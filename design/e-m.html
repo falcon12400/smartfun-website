@@ -1,0 +1,53 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#13294b;--navy2:#0c1d38;--sun:#f5b301;--sky:#e8eefb}
+body{width:100%;max-width:480px;margin:0 auto;font-family:"Noto Sans TC",sans-serif;color:#18263d;background:#f2f4f8;padding-bottom:86px;position:relative}
+header{background:#fff;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px;box-shadow:0 1px 0 #e2e6ee}
+.logo{font-size:18px;font-weight:900;color:var(--navy)}.logo b{color:var(--sun)}
+.hd{display:flex;gap:16px;font-size:19px}
+.hero{background:linear-gradient(150deg,var(--navy),#1d3d70);color:#fff;padding:16px 16px 0}
+.crumb{font-size:11px;color:#93a6c8}
+.badges{display:flex;gap:6px;margin-top:14px}.badges span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px}.badges .y{background:var(--sun);color:var(--navy);border-color:var(--sun)}
+h1{font-size:34px;font-weight:900;margin:10px 0 8px}
+.lead{color:#c3cfe4;font-size:14px;line-height:1.75}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+.kpi{background:rgba(255,255,255,.08);border-radius:10px;padding:12px 14px}.kpi small{display:block;color:#93a6c8;font-size:11px;font-weight:700}.kpi b{font-size:17px}.kpi b em{font-style:normal;color:var(--sun)}
+.viewer{background:#fff;border-radius:14px 14px 0 0;padding:12px 12px 10px}
+.viewer .ph{position:relative;border-radius:10px;overflow:hidden}.viewer .ph img{width:100%;height:250px;object-fit:cover;display:block}
+.viewer .ph span{position:absolute;right:10px;top:10px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px}
+.vm{display:flex;gap:6px;margin-top:10px;overflow:hidden;white-space:nowrap}.vm span{border:1px solid #d5dbe5;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--navy)}.vm .on{background:var(--sun);border-color:var(--sun)}
+.tabs{position:sticky;top:0;background:#fff;display:flex;gap:22px;padding:14px 16px 0;font-weight:700;font-size:14px;color:#889;box-shadow:0 6px 14px rgba(19,41,75,.06);white-space:nowrap;overflow:hidden}
+.tabs span{padding-bottom:11px}.tabs .on{color:var(--navy);border-bottom:3px solid var(--sun)}
+.tool{display:flex;gap:8px;align-items:center;padding:16px 16px 10px;overflow:hidden;white-space:nowrap}
+.fbtn{background:var(--navy);color:#fff;border-radius:8px;padding:8px 13px;font-size:13px;font-weight:700}.fbtn em{font-style:normal;background:var(--sun);color:var(--navy);border-radius:9px;padding:0 6px;margin-left:4px}
+.ac{background:#fff;border:1px solid #d5dbe5;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--navy)}
+.lesson{margin:4px 16px 14px;background:var(--navy);color:#fff;border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}.lesson b{font-size:14px}.lesson p{font-size:12px;color:#b8c4da;margin-top:2px}.lesson span{background:var(--sun);color:var(--navy);font-weight:700;font-size:12px;padding:7px 11px;border-radius:6px;white-space:nowrap}
+.row{display:grid;grid-template-columns:112px 1fr;background:#fff;border-radius:12px;overflow:hidden;margin:0 16px 10px;box-shadow:0 2px 0 #e3e7ef}
+.row img{width:112px;height:100%;min-height:132px;object-fit:cover;display:block}
+.rb{padding:12px 14px}.rb h3{font-size:16px;font-weight:900;color:var(--navy);display:flex;align-items:center;gap:8px}.rb h3 em{font-style:normal;font-size:11px;color:#fff;background:var(--navy);border-radius:4px;padding:1px 6px}.rb h3 small{margin-left:auto;font-size:12px;color:#889;font-weight:700}
+.tags{display:flex;gap:4px;margin:7px 0;flex-wrap:wrap}.tags span{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:#eef1f6;color:#3b4660}.tags .w{background:#fff3d1;color:#8a5a00}
+.rb p{color:#556;font-size:12.5px;line-height:1.6}
+.rb .b{display:flex;gap:6px;margin-top:8px}.rb .b a{font-size:12px;font-weight:700;border-radius:6px;padding:5px 10px}.rb .y{background:var(--sun);color:var(--navy)}.rb .o{border:1px solid #d5dbe5}
+.rel{padding:22px 16px 10px}.rel h2{font-size:17px;font-weight:900;margin-bottom:10px}
+.rs{display:flex;gap:10px;overflow:hidden}.r{flex:0 0 160px;background:#fff;border-radius:12px;padding:10px;display:flex;gap:10px;align-items:center}.r img{width:52px;height:52px;object-fit:contain;background:#f6f7fa;border-radius:8px}.r b{font-size:13px}
+.bar{position:fixed;left:0;right:0;bottom:0;width:100%;max-width:480px;margin:0 auto;display:flex;gap:8px;padding:10px 14px 22px;background:#fff;box-shadow:0 -4px 14px rgba(19,41,75,.08)}
+.bar a{flex:1;text-align:center;padding:13px 0;border-radius:8px;font-weight:700;font-size:15px}.bar .s{border:1.5px solid var(--navy)}.bar .p{background:var(--sun);color:var(--navy);flex:1.5}
+</style></head><body><div style="background:#fff3c4;color:#6b5400;font-size:12px;text-align:center;padding:5px">設計稿（畫面示意，按鈕不能按） <a href="./" style="color:inherit">回設計稿</a></div>
+<header><div class="logo">聰明動 <b>SMART FUN</b></div><div class="hd"><span>🔍</span><span>☰</span></div></header>
+<section class="hero"><div class="crumb">教具總覽 › 平衡 › 聰明搖滾圈</div>
+<div class="badges"><span class="y">招牌教具</span><span>平衡</span><span>3D</span></div>
+<h1>聰明搖滾圈</h1><p class="lead">兩片拱片加五根條紋柱，組成拱橋、彩虹梯、搖椅、S 型小路與立柱關卡。</p>
+<div class="kpis"><div class="kpi"><small>訓練能力</small><b>平衡・核心</b></div><div class="kpi"><small>適合年齡</small><b>3–6 歲</b></div><div class="kpi"><small>擺法</small><b><em>6</em> 種</b></div><div class="kpi"><small>玩法</small><b><em>8</em> 種</b></div></div>
+<div class="viewer"><div class="ph"><img src="img/hero.jpg"><span>↻ 點一下旋轉</span></div><div class="vm"><span class="on">雙拱橫桿</span><span>拱橋</span><span>搖椅</span><span>S 型</span><span>立柱</span></div></div></section>
+<div class="tabs"><span class="on">玩法 8</span><span>擺法與零件</span><span>安全與收納</span><span>教案下載</span></div>
+<div class="tool"><span class="fbtn">⚙ 篩選<em>1</em></span><span class="ac">排隊 ✕</span><span class="ac">中大</span><span class="ac">不限場地</span></div>
+<div class="lesson"><div><b>📋 30 分鐘教案組合</b><p>直接帶一堂課</p></div><span>看教案 →</span></div>
+<div class="row"><img src="img/hero.jpg"><div class="rb"><h3><em>01</em>鑽山洞<small>5 分</small></h3><div class="tags"><span>排隊</span><span>小幼</span><span>中大</span></div><p>拱片立起來就是山洞，排隊一個接一個爬過去。</p><div class="b"><a class="y">看擺法</a><a class="o">完整玩法</a></div></div></div>
+<div class="row"><img src="img/a1.png" style="object-position:center 35%"><div class="rb"><h3><em>02</em>彩虹梯<small>6 分</small></h3><div class="tags"><span>排隊</span><span>中大</span></div><p>踩著五根橫桿，一格一格走過彎彎的梯子。</p><div class="b"><a class="y">看擺法</a><a class="o">完整玩法</a></div></div></div>
+<div class="row"><img src="img/a3.png" style="object-position:center 60%"><div class="rb"><h3><em>03</em>搖搖船<small>5 分</small></h3><div class="tags"><span>手具雙人</span><span>小幼</span><span class="w">⚠ 地面平坦</span></div><p>倒放變搖椅，兩人面對面坐，一起前後搖。</p><div class="b"><a class="y">看擺法</a><a class="o">完整玩法</a></div></div></div>
+<div class="row"><img src="img/a2.png" style="object-position:center 55%"><div class="rb"><h3><em>04</em>S 型小路<small>5 分</small></h3><div class="tags"><span>排隊</span><span>小幼</span></div><p>兩片平放接成 S 型，張開雙手走到底。</p><div class="b"><a class="y">看擺法</a><a class="o">完整玩法</a></div></div></div>
+<section class="rel"><h2>相關教具</h2><div class="rs"><div class="r"><img src="img/p04.png"><b>半圓平衡柱</b></div><div class="r"><img src="img/p08.png"><b>平衡搖擺板</b></div></div></section>
+<div class="bar"><a class="s">列印</a><a class="p">詢價</a></div>
+</body></html>

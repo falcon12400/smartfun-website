@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>聰明動 SMART FUN｜A 北歐極簡型錄</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+:root{--accent:#e53935;--accent-ink:#fff;--radius:0}
+body{color:#222;background:#fff}
+.wrap{max-width:1280px;margin:0 auto;padding:0 48px}
+header{border-bottom:1px solid #eee;position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);z-index:10}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:84px}
+.logo{font-size:24px;font-weight:700;letter-spacing:4px;line-height:1.1}.logo small{display:block;font-size:10px;letter-spacing:6px;color:var(--accent);font-weight:400}
+nav{display:flex;gap:40px;font-size:14px;letter-spacing:3px;color:#555}nav a:hover{color:#000}
+.menu{display:none;font-size:26px}
+.hero .wrap{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;padding-top:72px;padding-bottom:72px}
+.hero h1{font-size:clamp(34px,4.4vw,56px);font-weight:300;line-height:1.35;letter-spacing:2px}
+.hero p{margin-top:24px;color:#777;line-height:1.9;max-width:460px}
+.btn{display:inline-block;margin-top:36px;border:1px solid #222;padding:14px 34px;font-size:14px;letter-spacing:3px;transition:.2s}.btn:hover{background:#222;color:#fff}
+.hero img{width:100%;max-height:460px;object-fit:contain}
+h2{text-align:center;font-weight:400;letter-spacing:10px;font-size:22px;padding-top:56px}
+.filters{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;padding:24px 16px 48px}
+.filters button{padding:8px 22px;border:1px solid #ddd;border-radius:20px;font-size:14px;color:#666;transition:.2s}
+.filters button.on{background:#222;color:#fff;border-color:#222}
+.catalog{background:#f6f6f6;padding:48px 0 80px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.card{background:#fff;padding:24px 20px 20px;text-align:center;box-shadow:0 2px 0 #e2e2e2;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.08)}
+.card img{width:100%;aspect-ratio:1;object-fit:contain}
+.card b{display:block;margin-top:14px;font-weight:400;letter-spacing:3px}
+.card i{font-style:normal;font-size:12px;color:#999;letter-spacing:1px}
+.about .wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;padding-top:96px;padding-bottom:96px;align-items:center}
+.about h3{font-size:30px;font-weight:300;letter-spacing:2px;line-height:1.5}
+.about p{color:#666;line-height:2}
+.contact{background:#222;color:#ddd;padding:72px 0;text-align:center}
+.contact h3{color:#fff;font-weight:300;letter-spacing:6px;font-size:26px}
+.contact p{margin:16px 0 28px;color:#aaa}
+.contact a{display:inline-block;border:1px solid #fff;color:#fff;padding:14px 40px;letter-spacing:3px;margin:6px}
+footer{text-align:center;font-size:12px;color:#999;padding:24px;letter-spacing:2px}
+@media (max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:700px){
+ .wrap{padding:0 16px} header .wrap{height:64px} nav{display:none} .menu{display:block}
+ .hero .wrap{grid-template-columns:1fr;padding-top:32px;padding-bottom:40px;gap:16px} .hero img{order:-1;max-height:260px}
+ .grid{grid-template-columns:repeat(2,1fr);gap:12px} .card{padding:14px 10px} .card b{letter-spacing:1px;font-size:14px}
+ .about .wrap{grid-template-columns:1fr;gap:20px;padding-top:56px;padding-bottom:56px}
+}
+</style></head><body>
+<div class="proto">試作版：文字與年齡為示意 <a href="../">回選單</a></div>
+<header><div class="wrap"><a class="logo" href="#">聰明動<small>SMART FUN</small></a>
+<nav><a href="#catalog">教具系列</a><a href="#about">關於我們</a><a href="#contact">聯絡</a></nav><span class="menu">☰</span></div></header>
+
+<section class="hero"><div class="wrap"><div>
+<h1>為幼兒體能課<br>設計的教具</h1>
+<p>聰明動長年到幼兒園帶體能課，把現場需要的器材一件件做出來。輕巧、安全、可以自由組合，一套教具就能排出一整堂課。</p>
+<a class="btn" href="#catalog">瀏覽全部教具 →</a></div>
+<img src="../assets/img/p13.png" alt="弧形模組"></div></section>
+
+<h2 id="catalog">教 具 系 列</h2>
+<div class="filters" id="filters"></div>
+<section class="catalog"><div class="wrap"><div class="grid" id="grid"></div></div></section>
+
+<section class="about" id="about"><div class="wrap">
+<h3>從幼兒園現場<br>長出來的教具</h3>
+<p>我們是到園服務的幼兒體能團隊。每一件教具，都是老師在課堂上發現「如果有這個就好了」，再反覆修改做出來的。現在，我們希望讓更多老師和孩子一起玩。</p>
+</div></section>
+
+<section class="contact" id="contact"><h3>聯 絡 我 們</h3><p>想了解教具、合作或到園課程，歡迎與我們聯繫。</p>
+<a href="#">LINE 官方帳號</a><a href="#">Email</a></section>
+<footer>© 聰明動 SMART FUN</footer>
+
+<script src="../assets/plays.js"></script>
+<script src="../assets/catalog.js"></script>
+<script>
+initCatalog({grid:"#grid",filters:"#filters",card:(p,src)=>
+ `<div class="card" data-id="${p.id}"><img src="${src}" alt="${p.name}" loading="lazy"><b>${p.name}</b><i>${p.cat}</i><div class="bdgs">${p.badges||""}</div></div>`});
+</script>
+</body></html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>聰明搖滾圈 3D 試作</title>
+<style>
+:root{--bg:#f4f5f7;--panel:#fff;--ink:#1d2433;--sub:#6b7385;--line:#e3e6ec;--accent:#2f5bea}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 "Noto Sans TC","Microsoft JhengHei",sans-serif}
+.proto{background:#fff6d6;font-size:13px;padding:6px 16px;color:#7a5b00}.proto a{color:inherit;margin-left:8px}
+.app{display:grid;grid-template-columns:1fr 340px;height:calc(100vh - 32px)}
+#view{position:relative;min-height:0}
+.app>*{min-width:0}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+.hint{position:absolute;left:16px;bottom:12px;font-size:13px;color:var(--sub);background:rgba(255,255,255,.8);padding:4px 10px;border-radius:6px}
+aside{background:var(--panel);border-left:1px solid var(--line);overflow:auto;padding:18px}
+h1{font-size:20px}h2{font-size:14px;color:var(--sub);margin:18px 0 8px;font-weight:700}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.modes button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px;font:inherit;font-size:14px;cursor:pointer;text-align:left}
+.modes button.on{border-color:var(--accent);background:#eef2ff;color:var(--accent);font-weight:700}
+.ref{margin-top:10px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ref img{width:100%;max-height:220px;object-fit:contain;background:#eee;display:block}
+.ref div{font-size:12px;color:var(--sub);padding:4px 8px}
+.dim label{display:grid;grid-template-columns:96px 1fr 52px;align-items:center;gap:8px;font-size:13px;margin:6px 0}
+.dim input{width:100%}.dim output{text-align:right;color:var(--sub)}
+.note{font-size:12px;color:var(--sub);margin-top:8px}
+.row{display:flex;gap:6px;flex-wrap:wrap}.row button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 10px;font:inherit;font-size:13px;cursor:pointer}
+@media (max-width:800px){.app{grid-template-columns:1fr;height:auto}#view{height:62vh}aside{border-left:0;border-top:1px solid var(--line);padding:16px}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head><body>
+<div class="proto">試作版：尺寸是從照片估的，之後用原廠圖檔驗證 <a href="../">回選單</a></div>
+<div class="app">
+<div id="view"><div class="hint">拖曳旋轉・滾輪或雙指縮放・右鍵平移</div></div>
+<aside>
+<h1>聰明搖滾圈</h1>
+<h2>擺法</h2><div class="modes" id="modes"></div>
+<div class="ref" id="ref"><img id="refImg" alt=""><div id="refCap"></div></div>
+<h2>尺寸（公分，估計值）</h2><div class="dim" id="dims"></div>
+<div class="row" style="margin-top:6px"><button id="reset">恢復預設</button><button id="spin">自動旋轉：開</button></div>
+<p class="note">調整後可對照右上照片或原廠圖檔，確認比例。</p>
+<h2>拱片配色</h2><div class="row"><button data-c="blue">藍色款</button><button data-c="purple">紫色款</button><button data-c="mix">藍＋紫</button></div>
+</aside></div>
+
+<script type="module">
+import * as THREE from "three";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+
+const C={blue:0x2347c9,purple:0xb7a3ea,teal:0x6fd6c4,red:0xe5333c,navy:0x1f3fb8};
+const DEF={R:35,r:18,T:8,L:50,W:7};
+const LBL={R:"拱片外半徑",r:"拱片內半徑",T:"拱片厚度",L:"條紋柱長度",W:"柱子粗細"};
+const RNG={R:[20,60],r:[8,40],T:[4,16],L:[20,90],W:[4,14]};
+let d={...DEF}, scheme="mix";
+
+/* ---------- 場景 ---------- */
+const view=document.getElementById("view");
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+view.prepend(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xf4f5f7);
+const cam=new THREE.PerspectiveCamera(38,1,1,2000);cam.position.set(110,85,130);
+const ctl=new OrbitControls(cam,renderer.domElement);ctl.target.set(0,18,0);ctl.enableDamping=true;ctl.autoRotate=true;ctl.autoRotateSpeed=1.2;ctl.maxPolarAngle=Math.PI*0.49;
+scene.add(new THREE.HemisphereLight(0xffffff,0xb8bcc8,1.1));
+const sun=new THREE.DirectionalLight(0xffffff,1.6);sun.position.set(60,140,80);sun.castShadow=true;
+Object.assign(sun.shadow.camera,{left:-120,right:120,top:120,bottom:-120});sun.shadow.mapSize.set(2048,2048);scene.add(sun);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(800,800),new THREE.ShadowMaterial({opacity:.18}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+const grid=new THREE.GridHelper(400,40,0xdde0e6,0xe8eaee);grid.position.y=.01;scene.add(grid);
+function resize(){const w=view.clientWidth,h=view.clientHeight;renderer.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix()}
+addEventListener("resize",resize);
+
+const mat=c=>new THREE.MeshStandardMaterial({color:c,roughness:.85});
+const mesh=(g,c)=>{const m=new THREE.Mesh(g,mat(c));m.castShadow=m.receiveShadow=true;return m};
+
+/* ---------- 零件 ---------- */
+// 拱片：半圓環，厚度 5 層交錯色。內側面（z 正向）有 5 個不穿透的插孔：
+// 18°、54°、126°、162° 是六角孔，90° 是半圓孔。插孔深度 = 2 層。
+const HOLE_A=[P0(18),P0(54),P0(90),P0(126),P0(162)];function P0(deg){return deg*Math.PI/180}
+const HALF_I=2; // 第 3 根（正中間）是半圓柱
+const SOCK=2;   // 插孔佔幾層
+const halfR=()=>d.W*.7;
+// 截面：v 軸 = 從拱片圓心往外的方向。六角柱尖角朝外；半圓柱圓弧朝外、平面朝內
+function hexPts(w){const a=w/2/Math.cos(Math.PI/6),p=[];for(let i=0;i<6;i++){const t=Math.PI/2+i*Math.PI/3;p.push([a*Math.cos(t),a*Math.sin(t)])}return p}
+function halfPts(){const r=halfR(),p=[];for(let i=0;i<=24;i++){const t=i/24*Math.PI;p.push([r*Math.cos(t),r*Math.sin(t)-r*.42])}return p}
+function placePts(pts,cx,cy,rot){const c=Math.cos(rot),s=Math.sin(rot);return pts.map(([u,v])=>[cx+u*c-v*s,cy+u*s+v*c])}
+function toPath(P,pts){pts.forEach(([x,y],i)=>i?P.lineTo(x,y):P.moveTo(x,y));P.closePath();return P}
+function archShape(withHoles){
+  const s=new THREE.Shape();s.absarc(0,0,d.R,0,Math.PI,false);s.lineTo(-d.r,0);s.absarc(0,0,d.r,Math.PI,0,true);s.lineTo(d.R,0);
+  if(withHoles){const rm=(d.R+d.r)/2;HOLE_A.forEach((a,i)=>{const pts=i===HALF_I?halfPts():hexPts(d.W);s.holes.push(toPath(new THREE.Path(),placePts(pts,rm*Math.cos(a),rm*Math.sin(a),a-Math.PI/2)))})}
+  return s;
+}
+function arch(main,alt){
+  const g=new THREE.Group(),n=5,lt=d.T/n,solid=archShape(false),holed=archShape(true);
+  for(let i=0;i<n;i++){const sh=i>=n-SOCK?holed:solid;const m=mesh(new THREE.ExtrudeGeometry(sh,{depth:lt,bevelEnabled:false,curveSegments:48}),i%2?alt:main);m.position.z=-d.T/2+i*lt;g.add(m)}
+  // 插孔底部
+  return g; // 範圍：x[-R,R] y[0,R] z[-T/2,T/2]，插孔開在 z=+T/2 那面
+}
+// 條紋柱：沿 z 軸、中心在原點；截面 v 軸朝 +y。每 2.5 公分換色
+function pillar(half,a,b){
+  const pts=half?halfPts():hexPts(d.W),shape=toPath(new THREE.Shape(),pts);
+  const g=new THREE.Group(),n=Math.max(2,Math.round(d.L/2.5)),h=d.L/n;
+  for(let i=0;i<n;i++){const m=mesh(new THREE.ExtrudeGeometry(shape,{depth:h,bevelEnabled:false,curveSegments:24}),i%2?b:a);m.position.z=-d.L/2+i*h;g.add(m)}
+  return g;
+}
+/* ---------- 物件與擺法 ---------- */
+let parts={};const root=new THREE.Group();scene.add(root);
+const PK=["p1","p2","p3","p4","p5"];
+function colors(){return scheme==="blue"?[[C.blue,C.purple],[C.blue,C.purple]]:scheme==="purple"?[[C.purple,C.blue],[C.purple,C.blue]]:[[C.blue,C.purple],[C.purple,C.blue]]}
+function build(){
+  root.clear();const [c1,c2]=colors();
+  const wrap=o=>{const p=new THREE.Group();p.add(o);root.add(p);return p};
+  parts={a1:wrap(arch(...c1)),a2:wrap(arch(...c2))};
+  PK.forEach((k,i)=>parts[k]=wrap(i===HALF_I?pillar(true,C.teal,C.purple):pillar(false,C.blue,C.purple)));
+}
+const q=(x,y,z)=>new THREE.Quaternion().setFromEuler(new THREE.Euler(x,y,z));
+const qz=a=>q(0,0,a),mul=(A,B)=>A.clone().multiply(B);
+const P=Math.PI,rm=()=>(d.R+d.r)/2,hp=a=>[rm()*Math.cos(a),rm()*Math.sin(a)];
+const HIDE={pos:[0,-40,0],q:q(0,0,0),s:.001};
+const fill=o=>{for(const k of ["a1","a2",...PK])if(!o[k])o[k]=HIDE;return o};
+const sd=()=>d.T/5*SOCK; // 插孔深度
+const gapZ=()=>d.L/2-sd()+d.T/2; // 立起時拱片中心離中線的距離
+const MODES={
+  bridge:{name:"單片拱橋",ref:["a1","拱片立起（照片中為兩片＋橫桿）"],cam:[70,55,90],get(){return fill({a1:{pos:[0,0,0],q:q(0,0,0)}})}},
+  ladder:{name:"雙拱＋橫桿",ref:["a1","對照：兩片拱片＋五根橫桿（四根六角柱、一根半圓柱）"],cam:[95,70,110],get(){const z=gapZ(),o={a1:{pos:[0,0,-z],q:q(0,0,0)},a2:{pos:[0,0,z],q:q(0,P,0)}};
+    PK.forEach((k,i)=>{const a=HOLE_A[i],[x,y]=hp(a);o[k]={pos:[x,y,0],q:qz(a-P/2)}});return fill(o)}},
+  rocker:{name:"倒放搖椅",ref:["a3","對照：拱片倒放、凹面朝上"],cam:[95,75,110],get(){const z=gapZ(),o={a1:{pos:[0,d.R,-z],q:q(0,0,P)},a2:{pos:[0,d.R,z],q:q(P,0,0)}};
+    PK.forEach((k,i)=>{const a=HOLE_A[i],[x,y]=hp(a);o[k]={pos:[-x,d.R-y,0],q:qz(a-P/2+P)}});return fill(o)}},
+  s:{name:"S 型平放",ref:["a2","對照：兩片平放接成 S"],cam:[40,120,110],get(){const t=d.T/2,sh=rm();
+    return fill({a1:{pos:[-sh,t,0],q:q(-P/2,0,0)},a2:{pos:[sh,t,0],q:q(-P/2,0,P)}})}},
+  posts:{name:"平放＋立柱",ref:["b1","對照：條紋柱插在拱片孔上"],cam:[90,95,120],get(){const t=d.T/2,sh=rm(),qa1=q(-P/2,0,0),qa2=q(-P/2,0,P),o={a1:{pos:[-sh,t,0],q:qa1},a2:{pos:[sh,t,0],q:qa2}};
+    const y=d.T-sd()+d.L/2,put=(k,i,onA2)=>{const a=HOLE_A[i],[x,yy]=hp(a);o[k]=onA2?{pos:[sh-x,y,yy],q:mul(qa2,qz(a-P/2))}:{pos:[x-sh,y,-yy],q:mul(qa1,qz(a-P/2))}};
+    put("p1",0,false);put("p2",4,false);put("p4",1,true);put("p5",3,true);return fill(o)}},
+  parts:{name:"全部零件",ref:["a1","零件：拱片×2、六角柱×4、半圓柱×1"],cam:[110,115,150],get(){const t=d.T/2,o={
+    a1:{pos:[-d.R-6,t,-d.R/2],q:q(-P/2,0,0)},a2:{pos:[d.R+6,t,-d.R/2],q:q(-P/2,0,0)}};
+    PK.forEach((k,i)=>{const half=i===HALF_I;o[k]={pos:[-d.L/2-2,half?halfR()*.42:d.W/2,10+i*(d.W+5)],q:mul(q(0,P/2,0),qz(half?0:P/6))}});return o}},
+};
+let mode="ladder",tween=null;
+function apply(target,instant){
+  const from={};for(const k in parts){const o=parts[k];from[k]={p:o.position.clone(),q:o.quaternion.clone(),s:o.scale.x}}
+  const to={};for(const k in target){const t=target[k];to[k]={p:new THREE.Vector3(...t.pos),q:t.q,s:t.s??1}}
+  if(instant){for(const k in to){const o=parts[k];o.position.copy(to[k].p);o.quaternion.copy(to[k].q);o.scale.setScalar(to[k].s)}tween=null;return}
+  tween={from,to,t0:performance.now(),dur:900};
+}
+function setMode(m,instant){
+  mode=m;const M=MODES[m];
+  document.querySelectorAll("#modes button").forEach(b=>b.classList.toggle("on",b.dataset.m===m));
+  document.getElementById("refImg").src="ref/"+M.ref[0]+".png";document.getElementById("refCap").textContent="實際照片｜"+M.ref[1];
+  apply(M.get(),instant);
+  if(!instant){camTo=new THREE.Vector3(...M.cam).multiplyScalar(cam.aspect<1?1.7:1);camT0=performance.now()}
+}
+let camTo=null,camT0=0;
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+
+/* ---------- UI ---------- */
+const modesEl=document.getElementById("modes");
+for(const k in MODES){const b=document.createElement("button");b.textContent=MODES[k].name;b.dataset.m=k;b.onclick=()=>setMode(k);modesEl.append(b)}
+const dimsEl=document.getElementById("dims");
+function dimUI(){dimsEl.innerHTML="";for(const k in DEF){const l=document.createElement("label");
+  l.innerHTML=`<span>${LBL[k]}</span><input type="range" min="${RNG[k][0]}" max="${RNG[k][1]}" step="0.5" value="${d[k]}"><output>${d[k]}</output>`;
+  const i=l.querySelector("input"),o=l.querySelector("output");
+  i.oninput=()=>{d[k]=+i.value;if(d.r>d.R-4){d.r=d.R-4}o.textContent=d[k];build();setMode(mode,true)};dimsEl.append(l)}}
+dimUI();
+document.getElementById("reset").onclick=()=>{d={...DEF};dimUI();build();setMode(mode,true)};
+const spinB=document.getElementById("spin");spinB.onclick=()=>{ctl.autoRotate=!ctl.autoRotate;spinB.textContent="自動旋轉："+(ctl.autoRotate?"開":"關")};
+document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{scheme=b.dataset.c;build();setMode(mode,true)});
+renderer.domElement.addEventListener("pointerdown",()=>{camTo=null});
+
+build();resize();setMode("ladder",true);cam.position.set(...MODES.ladder.cam).multiplyScalar(cam.aspect<1?1.7:1);
+renderer.setAnimationLoop(now=>{
+  if(tween){const t=Math.min(1,(now-tween.t0)/tween.dur),e=ease(t);
+    for(const k in tween.to){const o=parts[k],f=tween.from[k],g=tween.to[k];o.position.lerpVectors(f.p,g.p,e);o.quaternion.slerpQuaternions(f.q,g.q,e);o.scale.setScalar(f.s+(g.s-f.s)*e)}
+    if(t>=1)tween=null}
+  if(camTo){const t=Math.min(1,(now-camT0)/1200);cam.position.lerp(camTo,.06);if(t>=1)camTo=null}
+  ctl.update();renderer.render(scene,cam);
+});
+</script>
+</body></html>

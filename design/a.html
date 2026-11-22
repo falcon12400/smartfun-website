@@ -1,0 +1,79 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;font-family:"Noto Sans TC",sans-serif;color:#1a1a1a;background:#fff}
+.w{padding:0 96px}
+header{display:flex;justify-content:space-between;align-items:center;height:88px;border-bottom:1px solid #ececec}
+.logo{font-size:22px;font-weight:700;letter-spacing:6px}.logo small{display:block;font-size:9px;letter-spacing:7px;color:#d8402f;font-weight:400}
+nav{display:flex;gap:44px;font-size:13px;letter-spacing:4px;color:#666}
+.crumb{font-size:12px;letter-spacing:2px;color:#999;padding-top:28px;padding-bottom:28px}
+.hero{display:grid;grid-template-columns:1.15fr 1fr;gap:80px;align-items:center;padding-bottom:88px}
+.photo{position:relative;background:#eef7f5;aspect-ratio:1/1;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo .tag{position:absolute;left:24px;bottom:24px;background:#fff;font-size:11px;letter-spacing:3px;padding:8px 14px}
+.thumbs{display:flex;gap:10px;margin-top:10px}.thumbs img{width:88px;height:88px;object-fit:cover;opacity:.75}.thumbs img:first-child{opacity:1;outline:1px solid #1a1a1a;outline-offset:3px}
+.cat{font-size:11px;letter-spacing:6px;color:#d8402f}
+h1{font-family:"Noto Serif TC",serif;font-weight:300;font-size:64px;letter-spacing:8px;margin:18px 0 24px;line-height:1.2}
+.lead{font-size:16px;line-height:2.1;color:#555;max-width:470px}
+dl{display:grid;grid-template-columns:110px 1fr;margin-top:40px;border-top:1px solid #e6e6e6}
+dt,dd{padding:16px 0;border-bottom:1px solid #e6e6e6;font-size:14px}dt{color:#999;letter-spacing:3px;font-size:12px;padding-top:18px}
+.btns{display:flex;gap:14px;margin-top:40px}
+.btns a{padding:17px 38px;font-size:13px;letter-spacing:4px;border:1px solid #1a1a1a}.btns a:first-child{background:#1a1a1a;color:#fff}
+.modes{border-top:1px solid #ececec;padding-top:72px;padding-bottom:88px}
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px}
+.sh h2{font-family:"Noto Serif TC",serif;font-weight:300;font-size:30px;letter-spacing:10px}.sh span{font-size:12px;letter-spacing:3px;color:#999}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.m img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.m b{display:block;font-weight:500;letter-spacing:3px;margin-top:16px;font-size:15px}.m i{font-style:normal;font-family:"Noto Serif TC",serif;color:#d8402f;font-size:13px;margin-right:10px}
+.m p{font-size:12px;color:#999;margin-top:4px;letter-spacing:1px}
+.plays{background:#1c1c1c;color:#eee;padding:88px 96px 100px}
+.plays .sh h2{color:#fff}.plays .sh span{color:#888}
+.filters{display:flex;gap:40px;align-items:center;padding-bottom:32px;border-bottom:1px solid #333;margin-bottom:44px;font-size:13px}
+.filters .g{display:flex;gap:10px;align-items:center}.filters label{color:#777;letter-spacing:3px;font-size:11px;margin-right:6px}
+.chip{border:1px solid #4a4a4a;padding:7px 18px;border-radius:30px;color:#ccc}.chip.on{background:#d8402f;border-color:#d8402f;color:#fff}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.card{background:#fff;color:#1a1a1a}
+.card .im{position:relative}.card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.card .no{position:absolute;left:0;top:0;background:#fff;font-family:"Noto Serif TC",serif;font-size:18px;padding:10px 16px}
+.card .bd{padding:26px 26px 28px}
+.card h3{font-family:"Noto Serif TC",serif;font-weight:500;font-size:22px;letter-spacing:4px}
+.meta{display:flex;gap:8px;margin:14px 0;flex-wrap:wrap}.meta span{font-size:11px;letter-spacing:2px;border:1px solid #ddd;padding:3px 10px;color:#555}.meta .t{border-color:#1a1a1a;color:#1a1a1a}.meta .w{border-color:#f0c3bd;color:#c0392b;background:#fff6f5}
+.card p{font-size:14px;line-height:1.9;color:#666}
+.card .ft{display:flex;justify-content:space-between;margin-top:20px;font-size:12px;letter-spacing:3px;color:#999;border-top:1px solid #eee;padding-top:16px}.card .ft b{color:#d8402f;font-weight:500}
+.rel{padding:88px 96px 96px}
+.rgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.r{background:#f6f6f6;padding:28px;text-align:center}.r img{width:100%;aspect-ratio:1;object-fit:contain}.r b{display:block;margin-top:14px;font-weight:400;letter-spacing:3px;font-size:14px}
+footer{border-top:1px solid #eee;text-align:center;padding:30px;font-size:11px;letter-spacing:4px;color:#aaa}
+</style></head><body><div style="background:#fff3c4;color:#6b5400;font-size:13px;text-align:center;padding:6px">電腦版設計稿（畫面示意，寬 1440） <a href="./" style="color:inherit">回設計稿</a></div>
+<header class="w"><div class="logo">聰明動<small>SMART FUN</small></div><nav><span>教具系列</span><span>玩法</span><span>關於我們</span><span>聯絡</span></nav></header>
+<div class="w crumb">教具系列 ／ 平衡 ／ 聰明搖滾圈</div>
+<section class="w hero">
+  <div><div class="photo"><img src="img/hero.jpg"><span class="tag">可旋轉 3D 模型 ↻</span></div>
+    <div class="thumbs"><img src="img/hero.jpg"><img src="img/a1.png"><img src="img/a2.png"><img src="img/a3.png"><img src="img/b1.png"></div></div>
+  <div><div class="cat">BALANCE ・ 平衡</div><h1>聰明搖滾圈</h1>
+    <p class="lead">兩片半圓拱片，五根條紋柱。立起來是拱橋、倒過來是搖椅、平放是小路——一套教具，陪孩子玩過一整個學期。</p>
+    <dl><dt>訓練能力</dt><dd>動態平衡　核心穩定　身體控制</dd><dt>適合年齡</dt><dd>3–6 歲</dd><dt>零件</dt><dd>拱片 ×2、六角柱 ×4、半圓柱 ×1</dd><dt>玩法</dt><dd>8 種，含排隊、雙人、團體、競賽</dd></dl>
+    <div class="btns"><a>詢問這項教具</a><a>下載玩法 PDF</a></div></div>
+</section>
+<section class="w modes"><div class="sh"><h2>擺 法</h2><span>FOUR WAYS TO BUILD</span></div>
+  <div class="mgrid">
+    <div class="m"><img src="img/a1.png"><b><i>01</i>雙拱彩虹梯</b><p>拱片立起，橫桿相連</p></div>
+    <div class="m"><img src="img/a3.png"><b><i>02</i>倒放搖椅</b><p>凹面朝上，兩人對坐</p></div>
+    <div class="m"><img src="img/a2.png"><b><i>03</i>S 型小路</b><p>兩片平放，接成彎路</p></div>
+    <div class="m"><img src="img/b1.png"><b><i>04</i>平放立柱</b><p>柱子插上，變成障礙</p></div>
+  </div></section>
+<section class="plays"><div class="sh"><h2>玩 法</h2><span>8 PLAYS</span></div>
+  <div class="filters"><div class="g"><label>類型</label><span class="chip on">全部</span><span class="chip">排隊</span><span class="chip">手具雙人</span><span class="chip">團體</span><span class="chip">競賽</span></div><div class="g"><label>年齡</label><span class="chip">小幼</span><span class="chip">中大</span></div><div class="g"><span class="chip">☐ 只看不限場地</span></div></div>
+  <div class="pgrid">
+    <div class="card"><div class="im"><img src="img/hero.jpg"><span class="no">01</span></div><div class="bd"><h3>鑽山洞</h3><div class="meta"><span class="t">排隊</span><span>小幼</span><span>中大</span></div><p>拱片立起來就是一座山洞，孩子排隊一個接一個爬過去。</p><div class="ft"><span>約 5 分鐘</span><b>完整玩法 →</b></div></div></div>
+    <div class="card"><div class="im"><img src="img/a1.png" style="object-position:center 35%"><span class="no">02</span></div><div class="bd"><h3>彩虹梯</h3><div class="meta"><span class="t">排隊</span><span>中大</span></div><p>踩著五根橫桿，一格一格走過彎彎的梯子。</p><div class="ft"><span>約 6 分鐘</span><b>完整玩法 →</b></div></div></div>
+    <div class="card"><div class="im"><img src="img/a3.png" style="object-position:center 60%"><span class="no">03</span></div><div class="bd"><h3>搖搖船</h3><div class="meta"><span class="t">手具雙人</span><span>小幼</span><span>中大</span><span class="w">地面需平坦</span></div><p>拱片倒過來變成搖椅，兩個人面對面坐，一起前後搖。</p><div class="ft"><span>約 5 分鐘</span><b>完整玩法 →</b></div></div></div>
+    <div class="card"><div class="im"><img src="img/a2.png" style="object-position:center 55%"><span class="no">04</span></div><div class="bd"><h3>S 型小路</h3><div class="meta"><span class="t">排隊</span><span>小幼</span></div><p>張開雙手當翅膀，沿著彎彎的小路走到底。</p><div class="ft"><span>約 5 分鐘</span><b>完整玩法 →</b></div></div></div>
+    <div class="card"><div class="im"><img src="img/b1.png" style="object-position:center 40%"><span class="no">05</span></div><div class="bd"><h3>繞柱子</h3><div class="meta"><span class="t">排隊</span><span>小幼</span><span>中大</span></div><p>柱子插在拱片上當障礙，孩子繞著柱子走 S 型。</p><div class="ft"><span>約 6 分鐘</span><b>完整玩法 →</b></div></div></div>
+    <div class="card"><div class="im"><img src="img/b1.png" style="object-position:center 20%"><span class="no">06</span></div><div class="bd"><h3>套圈圈</h3><div class="meta"><span class="t">競賽</span><span>中大</span><span class="w">需軟式呼拉圈</span></div><p>柱子立起來當目標，分兩隊比賽誰套中最多。</p><div class="ft"><span>約 8 分鐘</span><b>完整玩法 →</b></div></div></div>
+  </div></section>
+<section class="rel"><div class="sh"><h2>相 關 教 具</h2><span>BALANCE SERIES</span></div>
+  <div class="rgrid"><div class="r"><img src="img/p04.png"><b>半圓平衡柱</b></div><div class="r"><img src="img/p08.png"><b>平衡搖擺板</b></div><div class="r"><img src="img/p17.png"><b>連接平衡樑</b></div><div class="r"><img src="img/p06.png"><b>圓形平衡盤</b></div></div></section>
+<footer>© 聰明動 SMART FUN</footer>
+</body></html>

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>教具｜聰明動 SMART FUN</title>
+<link rel="stylesheet" href="../assets/base.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<style>
+:root{--navy:#13294b;--navy2:#0c1d38;--sun:#f5b301;--sky:#e8eefb;--pad:clamp(16px,5.5vw,80px)}
+body{font-family:"Noto Sans TC",sans-serif;color:#18263d;background:#f2f4f8}
+.w{padding-left:var(--pad);padding-right:var(--pad);max-width:1440px;margin:0 auto}
+.topbar{background:var(--navy2);color:#b8c4da;font-size:13px}.topbar .w{display:flex;justify-content:space-between;padding-top:9px;padding-bottom:9px}
+header.top{background:#fff;box-shadow:0 1px 0 #e2e6ee}header.top .w{display:flex;align-items:center;gap:48px;height:76px}
+.logo{font-size:23px;font-weight:900;color:var(--navy);white-space:nowrap}.logo b{color:var(--sun)}
+nav.main{display:flex;gap:30px;font-weight:700;font-size:15px;flex:1}nav.main a:hover{color:#c58f00}
+.search{width:300px;border:1px solid #d5dbe5;border-radius:8px;padding:10px 14px;color:#99a;font-size:14px}
+.hicons{display:none;gap:16px;font-size:19px;margin-left:auto}
+.hero{background:linear-gradient(120deg,var(--navy) 0%,#1d3d70 100%);color:#fff}
+.hero .w{padding-top:30px}
+.crumb{font-size:13px;color:#93a6c8;padding:0;gap:8px}.crumb a:hover{color:#fff}
+.hgrid{display:grid;grid-template-columns:1fr minmax(420px,600px);gap:56px;align-items:end;margin-top:22px}
+#badges{display:flex;gap:8px}#badges span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);font-size:13px;font-weight:700;padding:4px 12px;border-radius:6px}#badges .b-star{background:var(--sun);color:var(--navy);border-color:var(--sun)}
+h1{font-size:56px;font-weight:900;margin:16px 0 14px;letter-spacing:2px}
+#desc{color:#c3cfe4;font-size:17px;line-height:1.8;max-width:560px}
+#facts{display:grid;grid-template-columns:repeat(4,1fr);margin-top:34px;background:rgba(255,255,255,.07);border-radius:12px 12px 0 0;overflow:hidden}
+.kpi{padding:22px 24px;border-right:1px solid rgba(255,255,255,.1)}.kpi:last-child{border:0}
+.kpi small{display:block;color:#93a6c8;font-size:12px;font-weight:700;letter-spacing:1px}.kpi b{display:block;font-size:20px;margin-top:6px;white-space:nowrap}.kpi b em{font-style:normal;color:var(--sun)}
+.vcard{background:#fff;border-radius:16px 16px 0 0;padding:22px 22px 18px;color:var(--navy)}
+.viewer{border-radius:10px;aspect-ratio:4/3;background:#eef7f5}
+.vtag{position:absolute;right:14px;top:14px;background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:20px;z-index:4;pointer-events:none}
+#modes{display:flex;gap:8px;margin-top:14px}#modes button{flex:1;text-align:center;border:1px solid #d5dbe5;border-radius:8px;padding:9px 0;font-size:13px;font-weight:700;white-space:nowrap}#modes button.on{background:var(--sun);border-color:var(--sun)}
+.bar2{background:#fff;box-shadow:0 6px 18px rgba(19,41,75,.06);position:sticky;top:0;z-index:20}
+.bar2 .w{display:flex;justify-content:space-between;align-items:center;height:72px}
+.tabs{display:flex;gap:32px;font-weight:700;color:#778;height:100%}.tabs a{display:flex;align-items:center;border-bottom:3px solid transparent;white-space:nowrap}.tabs a.on,.tabs a:hover{color:var(--navy);border-bottom-color:var(--sun)}
+.acts{display:flex;gap:10px}.acts a,.acts button{padding:11px 26px;border-radius:8px;font-weight:700;font-size:15px}.acts .p{background:var(--sun);color:var(--navy)}.acts .s{border:1.5px solid var(--navy)}
+.main{display:grid;grid-template-columns:270px 1fr;gap:28px;padding-top:36px;padding-bottom:56px;scroll-margin-top:80px}
+.side{background:#fff;border-radius:14px;padding:24px;align-self:start;position:sticky;top:96px}
+.side h4{font-size:13px;color:#8892a6;letter-spacing:1px;margin:0 0 10px}.side .grp{margin-bottom:22px}
+.side .sh{display:none}
+.chips{display:flex;flex-direction:column;gap:2px}
+.chips button{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:8px;font-size:15px;font-weight:500;text-align:left}
+.chips button i{font-style:normal;font-size:12px;color:#99a;background:#f2f4f8;border-radius:10px;padding:1px 8px}
+.chips button:hover{background:#f6f8fb}.chips button.on{background:var(--sky);color:var(--navy);font-weight:700}.chips button.on i{background:var(--navy);color:#fff}
+#f-limit{font-size:14px;border-top:1px solid #eef0f4;padding-top:16px;color:#556}#f-limit input{accent-color:var(--navy);width:16px;height:16px;vertical-align:-3px;margin-right:6px}
+#combo{margin-top:20px;background:var(--navy);color:#fff;border-radius:12px;padding:18px}#combo b{display:block;font-size:15px}#combo p{font-size:13px;color:#b8c4da;margin:6px 0 12px;line-height:1.6}#combo button{background:var(--sun);color:var(--navy);font-weight:700;font-size:13px;padding:7px 14px;border-radius:6px}
+#f-bar{display:none}
+.lh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}.lh h2{font-size:26px;font-weight:900;color:var(--navy)}.lh span{color:#778;font-size:14px}
+.play{display:grid;grid-template-columns:260px 1fr 150px;background:#fff;border-radius:14px;overflow:hidden;margin-bottom:16px;box-shadow:0 2px 0 #e3e7ef}
+.play>img{width:100%;height:196px;object-fit:cover;display:block}
+.rb{padding:22px 26px}.rb h3{font-size:21px;font-weight:900;color:var(--navy);display:flex;align-items:center;gap:12px}.rb h3 em{font-style:normal;font-size:13px;color:#fff;background:var(--navy);border-radius:6px;padding:2px 9px}.rb h3 small{display:none}
+.tags{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}.t{font-size:12px;font-weight:700;padding:3px 10px;border-radius:5px;background:#eef1f6;color:#3b4660}.t-limit{background:#fff3d1;color:#8a5a00}
+.rb p.in{color:#556;font-size:15px;line-height:1.7}
+.meta2{display:flex;gap:18px;margin-top:10px;font-size:13px;color:#667}.meta2 b{color:var(--navy);margin-right:6px}
+.rs{border-left:1px solid #eef0f4;padding:22px;display:flex;flex-direction:column;justify-content:space-between;text-align:center}
+.rs .tm{font-size:30px;font-weight:900;color:var(--navy);line-height:1}.rs .tm small{display:block;font-size:12px;color:#99a;font-weight:500;margin-top:4px}
+.rs button{display:block;width:100%;border-radius:8px;padding:9px;font-size:14px;font-weight:700}.rs .see{background:var(--sun);color:var(--navy);margin-bottom:8px}.rs .more{border:1px solid #d5dbe5}
+.detail{grid-column:1/-1;border-top:1px solid #eef0f4;background:#f9fafc;padding:18px 26px;display:grid;grid-template-columns:110px 1fr;gap:8px 16px;font-size:14px;color:#334}
+.detail h4{color:#778;font-size:13px;padding-top:2px}.detail ol,.detail ul{margin:0}.detail a{color:#1f4fc4;text-decoration:underline}
+.sec{padding-bottom:56px;scroll-margin-top:80px}.sec h2{font-size:24px;font-weight:900;color:var(--navy);margin-bottom:16px}
+.panel{background:#fff;border-radius:14px;padding:24px}
+#mode-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.mg{text-align:left;padding:0;background:#fff;border-radius:12px;overflow:hidden;border:2px solid transparent}.mg.on{border-color:var(--sun)}
+.mg img{width:100%;height:220px;object-fit:cover;display:block}.mg b{display:block;padding:12px 14px 2px;color:var(--navy);font-weight:900}.mg i{font-style:normal;color:#c58f00;margin-right:8px}.mg small{display:block;padding:0 14px 14px;color:#778;font-size:13px}
+.parts{margin-top:14px;color:#556;font-size:15px}.parts b{color:var(--navy)}
+#safety{padding-left:1.2em;line-height:2;color:#334}
+.dl{display:flex;justify-content:space-between;align-items:center}.dl p{color:#556}.dl span{background:#eef1f6;color:#8892a6;font-weight:700;padding:10px 18px;border-radius:8px}
+.rel-sec{padding-bottom:72px}.rel-sec h2{font-size:22px;font-weight:900;margin-bottom:16px}
+#related{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.rel{background:#fff;border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center;transition:box-shadow .2s}.rel:hover{box-shadow:0 8px 24px rgba(19,41,75,.12)}
+.rel .ri img{width:84px;height:84px;object-fit:contain;background:#f6f7fa;border-radius:10px;padding:6px}.rel b{display:block}.rel small{font-size:13px;color:#889}
+.rel{flex-wrap:wrap}.rel .ri{flex:0 0 auto}
+footer{background:var(--navy2);color:#8fa0bb;text-align:center;padding:24px;font-size:13px}
+.mbar,.f-close{display:none}
+@media (max-width:1100px){.hgrid{grid-template-columns:1fr}.vcard{max-width:640px}#facts{border-radius:12px}.play{grid-template-columns:200px 1fr 130px}#mode-gallery,#related{grid-template-columns:repeat(2,1fr)}}
+/* ---------- 手機版 ---------- */
+@media (max-width:760px){
+ body{padding-bottom:86px}
+ .topbar,.search,nav.main{display:none}.hicons{display:flex}
+ header.top .w{height:56px}.logo{font-size:18px}
+ .hero .w{padding-top:16px}.crumb{font-size:11px}
+ .hgrid{gap:16px;margin-top:14px}
+ #badges span{font-size:11px;padding:3px 9px}
+ h1{font-size:34px;margin:10px 0 8px}#desc{font-size:14px;line-height:1.75}
+ #facts{grid-template-columns:1fr 1fr;gap:8px;background:none;margin-top:16px}.kpi{background:rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;border:0}.kpi small{font-size:11px}.kpi b{font-size:17px;margin-top:2px}
+ .vcard{padding:12px 12px 10px;border-radius:14px 14px 0 0}.viewer{aspect-ratio:auto;height:250px}.vtag{font-size:11px;padding:5px 10px;right:10px;top:10px}
+ #modes{overflow-x:auto;scrollbar-width:none;margin-top:10px;gap:6px}#modes button{flex:0 0 auto;padding:7px 12px;font-size:12px}
+ .bar2 .w{height:auto;padding-top:14px}.acts{display:none}
+ .tabs{gap:22px;font-size:14px;overflow-x:auto;scrollbar-width:none}.tabs a{padding-bottom:11px}
+ .main{grid-template-columns:1fr;gap:0;padding-top:14px}
+ #f-bar{display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none;margin-bottom:10px}
+ #f-toggle{flex:0 0 auto;background:var(--navy);color:#fff;border-radius:8px;padding:8px 13px;font-size:13px;font-weight:700}#f-toggle i{font-style:normal;background:var(--sun);color:var(--navy);border-radius:9px;padding:0 6px;margin-left:4px}
+ #f-active{display:flex;gap:6px}#f-active button{flex:0 0 auto;background:#fff;border:1px solid #d5dbe5;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--navy);white-space:nowrap}
+ .side{position:fixed;left:0;right:0;bottom:0;top:auto;border-radius:20px 20px 0 0;z-index:50;max-height:80vh;overflow:auto;transform:translateY(105%);transition:transform .25s;box-shadow:0 -10px 30px rgba(0,0,0,.2);padding:20px 20px 28px}
+ body.filters-open .side{transform:none}
+ body.filters-open::after{content:"";position:fixed;inset:0;background:rgba(12,29,56,.45);z-index:40}
+ .side .sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.side .sh b{font-size:17px;color:var(--navy)}
+ .chips{flex-direction:row;flex-wrap:wrap;gap:8px}.chips button{border:1px solid #d5dbe5;padding:7px 12px;gap:6px}
+ .f-close{display:block;width:100%;margin-top:18px;background:var(--sun);color:var(--navy);font-weight:700;border-radius:10px;padding:13px}
+ .side .sh .f-close{display:inline;width:auto;margin:0;background:none;padding:0;font-size:22px;color:#889}
+ #combo{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 14px;padding:14px 16px}
+ #combo p{margin:2px 0 0;font-size:12px}#combo button{white-space:nowrap}
+ .side #combo{display:none}
+ .lh{display:none}
+ .play{grid-template-columns:112px 1fr;margin-bottom:10px;border-radius:12px}
+ .play>img{height:100%;min-height:132px;grid-row:span 2}
+ .rb{padding:12px 14px}.rb h3{font-size:16px;gap:8px}.rb h3 em{font-size:11px;padding:1px 6px}.rb h3 small{display:inline;margin-left:auto;font-size:12px;color:#889;font-weight:700}
+ .tags{gap:4px;margin:7px 0}.t{font-size:10px;padding:2px 7px}.rb p.in{font-size:12.5px;line-height:1.6}.meta2{display:none}
+ .rs{grid-column:2;border:0;padding:0 14px 12px;flex-direction:row;gap:6px;justify-content:flex-start}.rs .tm{display:none}
+ .rs>div{display:flex;gap:6px}.rs button{width:auto;font-size:12px;padding:5px 10px;margin:0!important}
+ .detail{grid-template-columns:1fr;gap:4px;padding:14px}.detail h4{padding-top:8px}
+ #mode-gallery{display:flex;overflow-x:auto;scrollbar-width:none;gap:10px}.mg{flex:0 0 150px}.mg img{height:180px}
+ .sec h2{font-size:18px}.panel{padding:16px}
+ .dl{flex-direction:column;align-items:flex-start;gap:10px}
+ #related{display:flex;overflow-x:auto;scrollbar-width:none;gap:10px}.rel{flex:0 0 170px;padding:10px;flex-wrap:nowrap}.rel .ri img{width:52px;height:52px}.rel b{font-size:13px}.rel small{display:none}
+ .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;gap:8px;padding:10px 14px 20px;background:#fff;box-shadow:0 -4px 14px rgba(19,41,75,.08);z-index:30}
+ .mbar a,.mbar button{flex:1;text-align:center;padding:13px 0;border-radius:8px;font-weight:700;font-size:15px}.mbar button{border:1.5px solid var(--navy)}.mbar a{background:var(--sun);color:var(--navy);flex:1.5}
+}
+</style></head><body>
+<div class="proto">試作版：玩法內容與 3D 尺寸為示意 <a href="../">回選單</a></div>
+<div class="topbar"><div class="w"><span>給幼兒園與體能老師的教具型錄</span><span>型錄 PDF　｜　聯絡我們</span></div></div>
+<header class="top"><div class="w"><a class="logo" href="index.html">聰明動 <b>SMART FUN</b></a><nav class="main"><a href="index.html#catalog">教具總覽</a><a href="index.html#catalog">依能力找</a><a href="#plan">教案資源</a><a href="index.html#contact">聯絡</a></nav><div class="search">🔍 搜尋教具或玩法…</div><div class="hicons"><span>🔍</span><span>☰</span></div></div></header>
+
+<section class="hero"><div class="w">
+ <nav class="crumb" id="crumb"></nav>
+ <div class="hgrid"><div><div id="badges"></div><h1 id="name"></h1><p id="desc"></p><div id="facts"></div></div>
+  <div class="vcard"><div class="viewer" id="viewer"><span class="vtag">↻ 拖曳旋轉 3D</span></div><div id="modes"></div></div></div>
+</div></section>
+<div class="bar2"><div class="w"><nav class="tabs"><a class="on" href="#plays-top">玩法 <span id="play-count"></span></a><a href="#modes-sec">擺法與零件</a><a href="#safety-sec">安全與收納</a><a href="#plan">教案下載</a></nav><div class="acts"><button class="s js-print">列印玩法</button><a class="p" href="index.html#contact">詢價</a></div></div></div>
+
+<section class="w main" id="plays-top">
+ <aside class="side" id="filters">
+  <div class="sh"><b>篩選玩法</b><button class="f-close">✕</button></div>
+  <div class="grp"><h4>玩法類型</h4><div class="chips" id="f-type"></div></div>
+  <div class="grp"><h4>年齡</h4><div class="chips" id="f-age"></div></div>
+  <div id="f-limit"></div>
+  <div id="combo" class="dsk-combo"></div>
+  <button class="f-close">看結果</button>
+ </aside>
+ <div>
+  <div id="f-bar"><button id="f-toggle">⚙ 篩選<i hidden>0</i></button><div id="f-active"></div></div>
+  <div class="lh"><h2>玩法</h2><span id="play-shown"></span></div>
+  <div class="plays" id="plays"></div>
+ </div>
+</section>
+<section class="w sec" id="modes-sec"><h2>擺法與零件</h2><div id="mode-gallery"></div><p class="parts" id="parts"></p></section>
+<section class="w sec" id="safety-sec"><h2>安全與收納</h2><div class="panel"><ul id="safety"></ul></div></section>
+<section class="w sec" id="plan"><h2>教案下載</h2><div class="panel dl"><p>完整教案（含熱身、主活動、收操與評量）整理中，完成後可在這裡下載 PDF。</p><span>準備中</span></div></section>
+<section class="w rel-sec"><h2>相關教具</h2><div id="related"></div></section>
+<footer>© 聰明動 SMART FUN</footer>
+<div class="mbar"><button class="js-print">列印</button><a href="index.html#contact">詢價</a></div>
+
+<script src="../assets/catalog.js"></script>
+<script src="../assets/plays.js"></script>
+<script type="module">
+import { initItem } from "../assets/item.js";
+// 手機版：教案組合放在篩選列下方（桌機在側欄裡）
+const combo = document.getElementById("combo");
+const placeCombo = () => { const mob = matchMedia("(max-width:760px)").matches, bar = document.getElementById("f-bar");
+  if (mob && combo.parentElement !== bar.parentElement) bar.after(combo); if (!mob && combo.parentElement.id !== "filters") document.querySelector("#filters .f-close:last-child").before(combo); };
+placeCombo(); matchMedia("(max-width:760px)").addEventListener("change", placeCombo);
+initItem({
+  crumbRoot: "教具總覽", viewerBg: "#eef7f5",
+  facts: ({ p, plays, modesCount }) => `<div class="kpi"><small>訓練能力</small><b>${p.skills.slice(0, 2).map(s => s.replace(/^動態/, "")).join("・")}</b></div><div class="kpi"><small>適合年齡</small><b>${p.age}</b></div><div class="kpi"><small>擺法</small><b>${modesCount ? `<em>${modesCount}</em> 種` : "—"}</b></div><div class="kpi"><small>玩法</small><b>${plays.length ? `<em>${plays.length}</em> 種` : "整理中"}</b></div>`,
+  modeLabel: v => v.replace("雙拱＋橫桿", "雙拱橫桿").replace("單片拱橋", "拱橋").replace("倒放搖椅", "搖椅").replace("S 型平放", "S 型").replace("平放＋立柱", "立柱").replace("全部零件", "零件"),
+  card: c => `<article class="play"><img src="${c.img}" style="object-position:${c.pos}" alt="" loading="lazy">
+    <div class="rb"><h3><em>${c.no}</em>${c.esc(c.pl.name)}</h3><div class="tags">${c.tags}</div><p class="in">${c.esc(c.pl.intro)}</p>
+    <div class="meta2"><span><b>訓練</b>${c.pl.skills.join("・")}</span><span><b>安全</b>${c.esc(c.pl.safety.split("；")[0])}</span></div></div>
+    <div class="rs"><div class="tm"></div><div>${c.see ? `<button class="see" data-mode="${c.mode}">看擺法</button>` : ""}<button class="more">完整玩法</button></div></div>${c.detail}</article>`,
+});
+const p = PRODUCTS.find(x => x.id === new URLSearchParams(location.search).get("id")) || PRODUCTS[0];
+document.getElementById("parts").innerHTML = p.parts ? `<b>零件：</b>${p.parts}` : "";
+// 分頁籤：捲到哪一段就亮哪一個
+const tabs = [...document.querySelectorAll(".tabs a")], secs = tabs.map(a => document.querySelector(a.getAttribute("href")));
+addEventListener("scroll", () => { let k = 0; secs.forEach((s, i) => { if (s && !s.hidden && s.getBoundingClientRect().top < 140) k = i; }); tabs.forEach((a, i) => a.classList.toggle("on", i === k)); }, { passive: true });
+</script>
+</body></html>
