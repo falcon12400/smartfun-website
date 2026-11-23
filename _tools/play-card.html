@@ -1,0 +1,86 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<!-- 教案卡（照片＋設計疊加）試作：鑽山洞。截圖 1600x1000 -->
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--coral:#ff5a3c;--ink:#2d2a32;--sub:#6f6a75;--cream:#fff8ef}
+body{width:1600px;height:1000px;font-family:"Noto Sans TC",sans-serif;color:var(--ink);background:#f3efe8;display:grid;grid-template-columns:1000px 600px}
+.photo{position:relative;overflow:hidden}
+.photo img.bg{width:1000px;height:1000px;object-fit:cover;display:block}
+.photo svg.ov{position:absolute;inset:0;width:100%;height:100%}
+.sticker{position:absolute;filter:drop-shadow(0 0 0 #fff) drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 8px 10px rgba(40,30,20,.25))}
+.mk{position:absolute;display:flex;align-items:center;gap:10px;transform:translate(-24px,-24px)}
+.mk b{width:48px;height:48px;border-radius:50%;background:var(--coral);color:#fff;font:900 24px/48px "Noto Sans TC";text-align:center;border:4px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.2);flex:0 0 auto}
+.mk span{background:#fff;border-radius:14px;padding:8px 14px;font-weight:700;font-size:18px;box-shadow:0 6px 14px rgba(0,0,0,.12);white-space:nowrap}
+.brand{position:absolute;left:28px;top:26px;background:rgba(255,255,255,.92);border-radius:30px;padding:8px 16px;font-weight:900;font-size:15px;letter-spacing:1px;color:#e8663d}
+.panel{background:#fff;padding:56px 52px 40px;display:flex;flex-direction:column}
+.tags{display:flex;gap:8px}.tags span{font-size:14px;font-weight:700;padding:5px 14px;border-radius:20px;background:#fff1de;color:#9a5a2a}.tags .t{background:#ffe3dc;color:#d9442a}
+h1{font-family:"Huninn";font-weight:400;font-size:64px;margin:18px 0 6px;letter-spacing:2px}
+.lead{font-size:19px;line-height:1.75;color:var(--sub)}
+h2{font-size:15px;letter-spacing:3px;color:#b0a79c;margin:30px 0 12px;font-weight:700}
+ol{list-style:none;display:grid;gap:14px}
+ol li{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start;font-size:18px;line-height:1.6}
+ol li b{width:36px;height:36px;border-radius:50%;background:var(--coral);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:17px;margin-top:-2px}
+.safe{margin-top:26px;background:#fff6e0;border-radius:18px;padding:18px 20px;display:flex;gap:14px;font-size:17px;line-height:1.6}
+.safe i{font-style:normal;font-size:26px;line-height:1}.safe strong{display:block;color:#a06a00;margin-bottom:2px}
+.lv{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.lv div{border-radius:16px;padding:14px 16px;font-size:16px;line-height:1.55;background:#f4f1ec}.lv div strong{display:block;font-size:14px;margin-bottom:4px}
+.lv .e strong{color:#2e8b6f}.lv .h strong{color:#d9442a}
+.prep p{font-size:17px;color:var(--sub)}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#b0a79c;border-top:1px solid #eee;padding-top:16px}
+.foot b{color:var(--ink)}
+</style></head><body>
+<section class="photo">
+  <img class="bg" src="../assets/photos/rock/hero.jpg" alt="">
+  <svg class="ov" viewBox="0 0 1000 1000">
+    <defs>
+      <marker id="ah" viewBox="0 0 12 12" refX="6.5" refY="6" markerWidth="3.6" markerHeight="3.6" orient="auto"><path d="M1,1.2 L11,6 L1,10.8 Q3.8,6 1,1.2 Z" fill="#ff5a3c" stroke="#fff" stroke-width="1.1" stroke-linejoin="round"/></marker>
+      <filter id="hand"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+    </defs>
+    <!-- 主路線：從前方爬進山洞 → 從後方出來 -->
+    <g filter="url(#hand)">
+      <path d="M720,935 C680,860 630,790 585,735" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" opacity=".95"/>
+      <path d="M720,935 C680,860 630,790 585,735" fill="none" stroke="#ff5a3c" stroke-width="16" stroke-linecap="round" marker-end="url(#ah)"/>
+      <path d="M560,700 C500,610 420,520 330,430" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-dasharray="4 18" opacity=".9"/>
+      <path d="M255,340 C215,300 180,268 135,240" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" opacity=".95"/>
+      <path d="M255,340 C215,300 180,268 135,240" fill="none" stroke="#ff5a3c" stroke-width="16" stroke-linecap="round" marker-end="url(#ah)"/>
+    </g>
+    <!-- 回程：沿左側繞回隊伍最後面 -->
+    <g filter="url(#hand)">
+      <path d="M95,290 C30,420 40,640 130,800 C220,950 520,990 760,985" fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round" stroke-dasharray="2 26" opacity=".95"/>
+      <path d="M95,290 C30,420 40,640 130,800 C220,950 520,990 760,985" fill="none" stroke="#ff5a3c" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 26" marker-end="url(#ah)"/>
+    </g>
+  </svg>
+  <div class="brand">SMART FUN ・ 聰明搖滾圈</div>
+  <div id="kids"></div>
+  <div class="mk" style="left:800px;top:700px"><b>1</b><span>排成一列</span></div>
+  <div class="mk" style="left:705px;top:600px"><b>2</b><span>從山洞口爬進去</span></div>
+  <div class="mk" style="left:150px;top:150px"><b>3</b><span>從後面爬出來，繞回隊伍</span></div>
+</section>
+<section class="panel">
+  <div class="tags"><span class="t">排隊</span><span>小幼</span><span>中大</span><span>不限場地</span></div>
+  <h1>鑽山洞</h1>
+  <p class="lead">拱片立起來就是一座山洞，孩子排隊一個接一個爬過去。</p>
+  <h2>怎麼玩</h2>
+  <ol>
+    <li><b>1</b><span>拱片立在軟墊上，前後各留 2 公尺；孩子在起點排成一列。</span></li>
+    <li><b>2</b><span>輪到的人趴下，手腳並用從山洞爬過去，頭低低的。</span></li>
+    <li><b>3</b><span>爬出來後沿外側繞回隊伍最後面，換下一位出發。</span></li>
+  </ol>
+  <div class="safe"><i>⚠️</i><div><strong>安全提醒</strong>前一位完全爬出山洞，下一位才出發；不要用頭撞拱片。</div></div>
+  <div class="lv"><div class="e"><strong>簡單一點</strong>小幼可以彎腰用走的鑽過。</div><div class="h"><strong>挑戰一點</strong>改成倒退爬，或全程不能碰到拱片。</div></div>
+  <div class="prep"><h2>準備</h2><p>聰明搖滾圈拱片 ×1（立起）・軟墊・起點標示線</p></div>
+  <div class="foot"><span>訓練能力　<b>鑽爬・身體意識</b></span><span>人數與時間依年齡調整</span></div>
+</section>
+<script type="module">
+import { kidSVG } from "./kid-art.js";
+const put = (pose, opt, x, y, h) => { const k = kidSVG(pose, opt), d = document.createElement("div"); d.className = "sticker";
+  d.innerHTML = k.svg; const s = d.firstChild; s.style.height = h + "px"; s.style.width = (h * k.w / k.h) + "px";
+  d.style.left = (x - h * k.w / k.h * k.ax) + "px"; d.style.top = (y - h * (1 - k.ay)) + "px"; document.getElementById("kids").append(d); };
+put("front", { shirt: "#4fc3f7", pants: "#ef6c00", hair: "#3e2723", style: 2 }, 935, 985, 150);
+put("front", { shirt: "#66bb6a", pants: "#8d6e63", hair: "#6d4c41", stripe: "#fff" }, 880, 905, 128);
+put("front", { shirt: "#ffca28", pants: "#26a69a", hair: "#212121", style: 1 }, 830, 835, 110);
+put("crawl", { shirt: "#ff8a65", pants: "#3f51b5", hair: "#4e342e", flip: true }, 690, 905, 92);
+document.title = "ready";
+</script>
+</body></html>
