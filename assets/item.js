@@ -70,6 +70,7 @@ export function initItem(cfg = {}) {
     document.querySelectorAll("#f-type, #f-age").forEach(el => el.addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b) return; const k = b.dataset.k, v = b.dataset.v;
       if (k === "all") { st.type.clear(); st.age.clear(); st.combo = false; }
+      else if (k === "type") { st.combo = false; const had = st.type.has(v); st.type.clear(); if (!had) st.type.add(v); } // 類型一次只選一種
       else { st.combo = false; st[k].has(v) ? st[k].delete(v) : st[k].add(v); }
       draw();
     }));
@@ -100,10 +101,35 @@ export function initItem(cfg = {}) {
     tags: tagsHTML(pl), detail: detailHTML(pl), see: !!(viewer && pl.mode), mode: pl.mode, esc });
   const playsEl = $("#plays"), moreBtn = $("#plays-more");
   let collapsed = !!moreBtn;
+  // ---- 人數少的玩法（4 人以下）：依設定收合到最下方 ----
+  const SKEY = "smartfun.smallMode";
+  const getSmall = () => { try { return localStorage.getItem(SKEY) || "fold"; } catch { return "fold"; } };
+  const setSmall = v => { try { localStorage.setItem(SKEY, v); } catch {} };
+  let smallOpen = false;
+  const smallEl = $("#small-sec"), gear = $("#f-gear"), pop = $("#gear-pop");
+  if (gear && pop) {
+    const syncPop = () => pop.querySelectorAll("input[name=small]").forEach(r => r.checked = r.value === getSmall());
+    gear.addEventListener("click", e => { e.stopPropagation(); pop.hidden = !pop.hidden; syncPop(); });
+    pop.addEventListener("click", e => e.stopPropagation());
+    pop.addEventListener("change", e => { if (e.target.name === "small") { setSmall(e.target.value); smallOpen = false; draw(); } });
+    document.addEventListener("click", () => pop.hidden = true);
+  }
+  if (smallEl) smallEl.addEventListener("click", e => {
+    if (e.target.closest(".sm-toggle")) { smallOpen = !smallOpen; draw(); }
+    if (e.target.closest(".sm-set") && gear) { e.stopPropagation(); pop.hidden = false; pop.querySelectorAll("input[name=small]").forEach(r => r.checked = r.value === getSmall()); gear.scrollIntoView({ behavior: "smooth", block: "center" }); }
+  });
   const showN = cfg.mobileShow || 2;
   function draw() {
-    const list = plays.filter(pl => st.combo ? p.combo.plays.includes(plays.indexOf(pl))
+    const all = plays.filter(pl => st.combo ? p.combo.plays.includes(plays.indexOf(pl))
       : (!st.type.size || st.type.has(pl.type)) && (!st.age.size || pl.age.some(a => st.age.has(a))) && (!st.noLimit || !pl.limit.length));
+    const fold = !!smallEl && getSmall() === "fold" && !st.combo;
+    const list = fold ? all.filter(pl => !pl.small) : all, smalls = fold ? all.filter(pl => pl.small) : [];
+    if (smallEl) {
+      const mainFolded = !!moreBtn && collapsed && list.length > showN && getComputedStyle(moreBtn).display !== "none"; // 手機版主列表還沒展開時先不顯示，避免兩顆按鈕疊在一起
+      smallEl.hidden = !smalls.length || mainFolded;
+      smallEl.innerHTML = smalls.length ? `<button class="sm-toggle" aria-expanded="${smallOpen}">${smallOpen ? "收起" : `還有 ${smalls.length} 個適合 4 人以下的玩法`} <span>${smallOpen ? "▴" : "▾"}</span></button>`
+        + (smallOpen ? `<div class="sm-note">💡 這些玩法適合 <b>4 人以下</b>的小班，因為你的設定收合在這裡。想讓它們一直顯示，可以到 <button class="sm-set">⚙ 顯示設定</button> 調整。</div><div class="plays sm-plays">${smalls.map(pl => cfg.card(cardCtx(pl, plays.indexOf(pl)))).join("")}</div>` : "") : "";
+    }
     document.querySelectorAll("#f-type button, #f-age button").forEach(b => {
       const k = b.dataset.k, on = k === "all" ? (!st.type.size && !st.age.size && !st.combo) : st[k].has(b.dataset.v);
       b.classList.toggle("on", on); b.setAttribute("aria-pressed", on);
@@ -122,11 +148,11 @@ export function initItem(cfg = {}) {
     if (moreBtn) { moreBtn.hidden = !(collapsed && list.length > showN); moreBtn.textContent = `看全部 ${list.length} 種玩法 ↓`; }
   }
   if (moreBtn) moreBtn.addEventListener("click", () => { collapsed = false; draw(); });
-  if (playsEl) playsEl.addEventListener("click", e => {
+  [playsEl, smallEl].forEach(host => host && host.addEventListener("click", e => {
     const more = e.target.closest(".more"), see = e.target.closest(".see");
     if (more) { const d = more.closest(".play").querySelector(".detail"), open = d.hidden; d.hidden = !open; more.setAttribute("aria-expanded", open); more.classList.toggle("open", open); more.textContent = open ? "收起 ▴" : (cfg.moreLabel || "完整玩法"); }
     if (see && viewer) { showMode(see.dataset.mode); viewerEl.scrollIntoView({ behavior: "smooth", block: "center" }); }
-  });
+  }));
   draw();
 
   // 列印：展開所有玩法

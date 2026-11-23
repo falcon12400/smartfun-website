@@ -92,6 +92,19 @@ footer{text-align:center;color:#c0ab98;padding:26px;font-size:14px}
  .rel{flex:0 0 140px;border-radius:22px;padding:12px}.rel .ri img{height:100px;aspect-ratio:auto;border-radius:16px;padding:8px}.rel b{font-size:15px;margin-top:8px}
  .fab{display:block;position:fixed;right:16px;bottom:22px;background:#06c755;color:#fff;font-weight:900;border-radius:30px;padding:14px 20px;box-shadow:0 10px 20px rgba(6,199,85,.35);font-size:15px;z-index:30}
 }
+
+/* 人數少的玩法：設定與收合區 */
+.gear-wrap{position:relative}
+#f-gear{background:rgba(255,255,255,.18);color:#fff;border-radius:30px;padding:10px 18px;font-weight:700}
+#gear-pop{position:absolute;right:0;top:calc(100% + 10px);z-index:20;width:250px;background:#fff;color:#4a352a;border-radius:18px;padding:16px 18px;box-shadow:0 12px 30px rgba(74,53,42,.25);text-align:left}
+#gear-pop b{display:block;margin-bottom:8px}#gear-pop label{display:flex;gap:8px;align-items:center;padding:6px 0;font-weight:700}
+#gear-pop small{display:block;margin-top:6px;color:#8a7768;font-size:12px;line-height:1.5}
+#small-sec{margin-top:34px;text-align:center}
+.sm-toggle{background:rgba(255,255,255,.22);color:#fff;border:2px dashed rgba(255,255,255,.7);border-radius:30px;padding:12px 26px;font-weight:900;font-size:15px}
+.sm-note{max-width:640px;margin:18px auto 22px;background:#fff8ee;color:#4a352a;border-radius:16px;padding:14px 18px;font-size:14px;line-height:1.7;text-align:left}
+.sm-set{background:none;color:#e8663d;font-weight:900;text-decoration:underline;padding:0}
+.sm-plays{text-align:left}
+@media (max-width:760px){ .gear-wrap{flex:none} #f-gear{white-space:nowrap;padding:8px 14px;font-size:13px} #gear-pop{position:fixed;left:16px;right:16px;top:auto;bottom:16px;width:auto} .sm-toggle{width:100%;font-size:14px} }
 </style></head><body>
 <div class="proto">試作版：玩法內容與 3D 尺寸為示意</div>
 <header class="top"><div class="w"><a class="logo" href="index.html"><b>聰明動</b><small>SMART FUN</small></a>
@@ -105,8 +118,9 @@ footer{text-align:center;color:#c0ab98;padding:26px;font-size:14px}
 <svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,50 C240,0 480,90 720,45 C960,0 1200,70 1440,30 L1440,80 L0,80 Z" fill="#f2874f"/></svg>
 <section class="plays-sec" id="plays-sec"><div class="w">
  <div class="ph2"><h2>怎麼<span>玩</span>？</h2><p>挑一個今天想玩的，孩子馬上就能上手</p></div>
- <div class="pfilters" id="filters"><div class="chips" id="f-type"></div><span class="sep">｜</span><div class="chips" id="f-age"></div><div id="f-limit"></div></div>
+ <div class="pfilters" id="filters"><div class="chips" id="f-type"></div><span class="sep">｜</span><div class="chips" id="f-age"></div><div id="f-limit"></div><div class="gear-wrap"><button id="f-gear" aria-label="顯示設定">⚙ 顯示設定</button><div id="gear-pop" hidden><b>適合 4 人以下的玩法</b><label><input type="radio" name="small" value="fold"> 收合在最下面</label><label><input type="radio" name="small" value="show"> 一起顯示</label><small>大班上課時建議收合，列表比較清爽。</small></div></div></div>
  <div class="plays" id="plays"></div><button id="plays-more"></button>
+ <div id="small-sec" hidden></div>
 </div></section>
 <section class="w rel-sec"><h2>一起玩的<span>好朋友</span></h2><div id="related"></div></section>
 <footer>© 聰明動 SMART FUN</footer>
