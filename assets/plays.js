@@ -13,7 +13,7 @@ const PLAYS = {
       steps: ["拱片立起放在軟墊上，前後各留 2 公尺。", "孩子排成一列，輪到的人趴下，手腳並用爬過山洞。", "爬出去後繞回隊伍最後面。"],
       safety: "前一位完全爬出去，下一位才出發；頭低低的，不要用撞的。",
       easier: "小幼可以用走的彎腰鑽過。", harder: "中大改成倒退爬，或爬過去時不能碰到拱片。" },
-    { name: "彩虹梯", photo: "rock/a1.png", pos: "center 35%", type: "排隊", age: ["中大"], limit: [], mode: "ladder",
+    { name: "彩虹梯", photo: "rock/real-6-ladder.jpg", pos: "center 55%", type: "排隊", age: ["中大"], limit: [], mode: "ladder",
       skills: ["動態平衡", "下肢控制"], props: [],
       intro: "兩片拱片接上五根橫桿，變成一座彎彎的梯子，踩著橫桿走過去。",
       steps: ["組成雙拱加五根橫桿，放在軟墊中間。", "老師站在旁邊牽手，孩子一格一格踩橫桿走上去、走下來。", "熟練後放開手，自己走。"],
