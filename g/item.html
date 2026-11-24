@@ -2,6 +2,7 @@
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>教具｜聰明動 SMART FUN</title>
 <link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="../assets/mobile-nav.css">
 <link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--coral:#e8663d;--coral2:#d9552e;--orange:#f2874f;--sun:#ffc23d;--cream:#fff1de;--peach:#ffe4d2;--brown:#5a3b2a;--bg:#fff8ee;--pad:clamp(18px,6vw,88px)}
@@ -91,12 +92,12 @@ footer{text-align:center;color:#c0ab98;padding:26px;font-size:14px}
 @media (max-width:760px){.plays-sec #plays{margin-top:22px}}
 </style></head><body>
 <header class="top"><div class="w"><a class="logo" href="index.html"><b>聰明動</b><small>SMART FUN</small></a>
-<nav class="main"><a href="index.html#catalog">教具系列</a><a class="line" href="index.html#contact">LINE 詢問</a></nav><div class="mob"><a class="mline" href="index.html#contact">LINE</a></div></div></header>
+<nav class="main"><a href="index.html#catalog">教具系列</a><a class="line" href="contact.html">聯絡我們</a></nav><button class="sf-menu-toggle" type="button" aria-label="開啟目錄" aria-expanded="false" aria-controls="sf-mobile-drawer"><span></span><span></span><span></span></button></div></header>
 <nav class="w crumb" id="crumb"></nav>
 <section class="w hero">
  <div class="stage"><div class="blob"></div><div class="b2"></div><div class="b3"></div><div class="frame"><div class="viewer" id="viewer"></div></div></div>
  <div class="info"><span class="b-pill" id="star">⭐ 招牌教具</span><h1 id="name"></h1><div id="tagline"></div><p id="desc"></p><div id="facts"></div>
-  <div class="cta"><a href="index.html#contact">💬 LINE 詢問這項教具</a><button class="js-print">🖨 列印玩法</button></div></div>
+  <div class="cta"><a href="contact.html">💬 前往聯絡我們</a><button class="js-print">🖨 列印玩法</button></div></div>
 </section>
 <svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,50 C240,0 480,90 720,45 C960,0 1200,70 1440,30 L1440,80 L0,80 Z" fill="#f2874f"/></svg>
 <section class="plays-sec" id="plays-sec"><div class="w">
@@ -105,10 +106,12 @@ footer{text-align:center;color:#c0ab98;padding:26px;font-size:14px}
 </div></section>
 <section class="w rel-sec"><h2>一起玩的<span>好朋友</span></h2><div id="related"></div></section>
 <footer>© 聰明動 SMART FUN</footer>
-<a class="fab" href="index.html#contact">💬 LINE 詢問</a>
+<a class="fab" href="contact.html">💬 聯絡我們</a>
 
 <script src="../assets/catalog.js"></script>
 <script src="../assets/plays.js"></script>
+<script src="../assets/mobile-nav.js"></script>
+<script>initMobileNav();</script>
 <script type="module">
 import { initItem } from "../assets/item.js";
 const p = PRODUCTS.find(x => x.id === new URLSearchParams(location.search).get("id")) || PRODUCTS[0];
