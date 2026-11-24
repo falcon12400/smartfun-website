@@ -1,0 +1,65 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>搖滾圈 圓環＋立柱（套圈圈草稿）</title>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<style>html,body{margin:0;height:100%;background:#fff}#v{width:100vw;height:100vh}</style></head><body><div id="v"></div>
+<script type="module">
+// 套圈圈草稿：兩片拱片平放拼成圓環（孔朝上），柱子插在孔裡朝上。
+// ?n=5 只插一片的 5 個孔；?n=10 兩片都插滿（需要兩組柱子）。?cam=x,y,z 調整視角。
+import { mountRocker } from "../assets/rocker3d.js";
+const qs = new URLSearchParams(location.search), n = +(qs.get("n") || 5), LEN = +(qs.get("len") || 50); // 柱長（模型單位），預設 50
+const v = mountRocker(document.getElementById("v"), { bg: "#ffffff", autoRotate: false, mode: "parts" });
+const { THREE, scene, cam, ctl, dims: d, holes } = v, P = Math.PI;
+const groups = scene.children.filter(o => o.type === "Group");
+const [a1, a2, ...pk] = groups;
+const q = (x, y, z) => new THREE.Quaternion().setFromEuler(new THREE.Euler(x, y, z));
+const qz = a => q(0, 0, a), mul = (A, B) => A.clone().multiply(B);
+const rm = (d.R + d.r) / 2, sd = d.T / 5 * 2, t = d.T / 2, y = d.T - sd + LEN / 2;
+pk.forEach(o => { const g = o.children[0]; g.scale.z = LEN / d.L; });
+const qa1 = q(-P / 2, 0, 0), qa2 = q(-P / 2, 0, P);
+a1.position.set(0, t, 0); a1.quaternion.copy(qa1);
+a2.position.set(0, t, 0); a2.quaternion.copy(qa2);
+const place = (o, i, second) => {
+  const a = holes[i], x = rm * Math.cos(a), yy = rm * Math.sin(a);
+  if (second) { o.position.set(-x, y, yy); o.quaternion.copy(mul(qa2, qz(a - P / 2))); }
+  else { o.position.set(x, y, -yy); o.quaternion.copy(mul(qa1, qz(a - P / 2))); }
+  o.scale.setScalar(1);
+};
+pk.forEach((o, i) => place(o, i, false));
+if (n >= 10) pk.forEach((o, i) => { const c = o.clone(); scene.add(c); place(c, i, true); });
+// ---- 套圈圈場景（?scene=toss）：童軍繩、簡化人形、圈圈。比例依小孩實拍照：拱片圓環外徑約 1 公尺 → 模型 1 單位 ≈ 1.43 公分 ----
+const CM = 1 / 1.43;
+if (qs.get("scene") === "toss") {
+  const mat = c => new THREE.MeshStandardMaterial({ color: c, roughness: .8 });
+  const add = (g, m, x = 0, y = 0, z = 0) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); o.castShadow = o.receiveShadow = true; scene.add(o); return o; };
+  // 木地板
+  const floor = add(new THREE.CircleGeometry(420, 64), mat(0xe2b98a)); floor.rotation.x = -P / 2; floor.position.y = -.05;
+  // 童軍繩：離搖滾圈外緣約 110 公分（小朋友手伸直搆不到）
+  const ROPE = 35 + (+(qs.get("rope") || 110)) * CM; // 繩子離拱片外緣幾公分
+  const rope = add(new THREE.TorusGeometry(ROPE, .9, 8, 160), mat(0xd9c49a)); rope.rotation.x = -P / 2; rope.position.y = .9;
+  // 圈圈：內徑約 18 公分（套得過 7 公分寬的柱子）
+  const HOOP_R = 10 * CM * 1.0 + 1.3, hoopCols = [0xf2874f, 0xffc23d, 0xe8663d, 0x6fd6c4, 0xf06292, 0x7fb3ff];
+  const hoop = (col, r = HOOP_R) => new THREE.Mesh(new THREE.TorusGeometry(r, 1.3, 10, 40), mat(col));
+  // 已套中的圈：套在第 2 根柱子（索引 1）底部
+  { const h = hoop(hoopCols[1]); h.castShadow = true; const p = pk[1].position; h.position.set(p.x, d.T + 1.5, p.z); h.rotation.x = -P / 2; scene.add(h); }
+  // 簡化人形（約 5 歲，身高 110）
+  const kid = (ang, shirt, pose) => {
+    const g = new THREE.Group(), skin = mat(0xf1c9a5), pants = mat(0x4a5a7a), hair = mat(0x2b2118);
+    const part = (geo, m, x, y, z) => { const o = new THREE.Mesh(geo, m); o.position.set(x, y, z); o.castShadow = true; g.add(o); return o; };
+    part(new THREE.CapsuleGeometry(4.2, 34, 4, 10), pants, -5, 24, 0); part(new THREE.CapsuleGeometry(4.2, 34, 4, 10), pants, 5, 24, 0);
+    part(new THREE.CapsuleGeometry(11, 22, 4, 12), mat(shirt), 0, 63, 0);
+    part(new THREE.SphereGeometry(11, 20, 16), skin, 0, 92, 0); const h = part(new THREE.SphereGeometry(11.6, 20, 16, 0, P * 2, 0, P / 2.1), hair, 0, 93.5, -.6);
+    // 手臂：右手舉高往前（準備丟），左手自然下垂
+    const arm = (side, up) => { const a = new THREE.Group(); a.position.set(side * 13, 74, 0); const m = new THREE.Mesh(new THREE.CapsuleGeometry(3.2, 26, 4, 8), skin); m.position.y = -15; m.castShadow = true; a.add(m); a.rotation.x = up; g.add(a); return a; };
+    const right = arm(1, pose === "throw" ? -2.3 : -1.2), left = arm(-1, pose === "throw" ? .25 : -.9);
+    if (pose !== "none") { const hp = hoop(shirt === 0xffffff ? 0xf2874f : hoopCols[(Math.random() * 6) | 0]); hp.position.set(0, -32, 4); hp.rotation.x = P / 2.4; right.add(hp); }
+    g.scale.setScalar(CM * +(qs.get("kidh") || 105) / 105); // 5 歲約 105 公分
+    const R = ROPE + 22; g.position.set(R * Math.cos(ang), 0, R * Math.sin(ang)); g.rotation.y = Math.atan2(-Math.cos(ang), -Math.sin(ang)); scene.add(g); return g;
+  };
+  const N = +(qs.get("kids") || 6), shirts = [0xfff3c4, 0xbfe3ff, 0xffc9c9, 0xc8f0d0, 0xffe0b2, 0xe1d5ff];
+  const jit = N > 8 ? .03 : .1, sh2 = [...shirts, 0xd7ecff, 0xffd6e7, 0xe9f7c8, 0xfff0d9];
+  for (let i = 0; i < N; i++) kid(-P / 2 + (i + .5) * P * 2 / N + (i % 2 ? jit : -jit), sh2[i % sh2.length], i % 3 === 2 ? "hold" : "throw");
+  // 空中飛的圈（一個朝柱子飛）
+  { const h = hoop(hoopCols[4]); h.position.set(-25, 38, -20); h.rotation.set(-1.1, .3, 0); h.castShadow = true; scene.add(h); }
+}
+const c = (qs.get("cam") || "95,85,115").split(",").map(Number);
+setTimeout(() => { cam.position.set(...c); ctl.target.set(0, qs.get("scene") === "toss" ? 25 : 14, 0); ctl.maxDistance = 1200; ctl.update(); document.title += " ready"; }, 200);
+</script></body></html>
