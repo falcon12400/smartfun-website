@@ -1,0 +1,26 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>搖滾圈 3D＋Logo 算圖</title>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<style>html,body{margin:0;background:transparent}#v{width:600px;height:600px}</style></head><body><div id="v"></div>
+<script type="module">
+// 聰明搖滾圈 3D 算圖，拱片外側面（沒有插孔那面）開口上方中央貼 SMART FUN Logo。
+// Logo 圖 assets/img/logo-smartfun.png 從商品照切出、轉正。?w=Logo 寬（模型單位，預設 24）、?y=Logo 中心高度（預設圓環中線）、?mode=、?zoom=（預設 .6，和 assets/img/rock.png 同大小）、?cam=x,y,z
+// 算圖完成後 window.result 是透明 PNG 的 dataURL（給 headless 存檔用）。
+import { mountRocker } from "../assets/rocker3d.js";
+const qs = new URLSearchParams(location.search);
+const v = mountRocker(document.getElementById("v"), { transparent: true, autoRotate: false, mode: qs.get("mode") || "ladder", zoom: +(qs.get("zoom") || .6) });
+const { THREE, scene, cam, renderer, dims: d } = v, P = Math.PI;
+if (qs.get("cam")) cam.position.set(...qs.get("cam").split(",").map(Number));
+const tex = await new THREE.TextureLoader().loadAsync("../assets/img/logo-smartfun.png");
+tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+const W = +(qs.get("w") || 24), H = W * tex.image.height / tex.image.width, Y = +(qs.get("y") || (d.R + d.r) / 2);
+const mat = new THREE.MeshStandardMaterial({ map: tex, transparent: true, roughness: .9, polygonOffset: true, polygonOffsetFactor: -2 });
+const [a1, a2] = scene.children.filter(o => o.type === "Group");
+for (const w of [a1, a2]) {
+  const logo = new THREE.Mesh(new THREE.PlaneGeometry(W, H), mat);
+  logo.position.set(0, Y, -d.T / 2 - .02); logo.rotation.y = P; // 外側面在拱片本地 z = -T/2，朝 -z
+  w.children[0].add(logo);
+}
+let n = 0; renderer.setAnimationLoop(null);
+const loop = () => { renderer.render(scene, cam); if (++n < 5) requestAnimationFrame(loop); else { window.result = renderer.domElement.toDataURL("image/png"); document.title = "done"; } };
+v.ctl.update(); loop();
+</script></body></html>
