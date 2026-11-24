@@ -8,6 +8,7 @@
 |---|---|
 | 網站程式（唯一正式版） | 本資料夾 `D:\VSCode\smartfun-website`，分支 `gh-pages`（GitHub Pages 從這裡發布） |
 | 網站素材（教具照、去背圖、3D 素材） | `D:\Document\聰明動\網頁\素材\` |
+| SMART FUN Logo（以這張為準） | `D:\Document\聰明動\網頁\素材\Logo\`；網站內 `assets/img/logo-smartfun.png` |
 | 設計稿、風格提案、參考網站截圖 | `D:\Document\聰明動\網頁\設計\` |
 | AI 重繪成果（含真實照片衍生圖） | `D:\Document\聰明動\網頁\AI重繪\` |
 | LINE 教案群組相簿下載 | `D:\Document\聰明動\課表教案\<日期 主題 器材>\` |
