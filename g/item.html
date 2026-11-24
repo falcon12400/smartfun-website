@@ -92,6 +92,8 @@ footer{text-align:center;color:#c0ab98;padding:26px;font-size:14px}
  .rel{flex:0 0 140px;border-radius:22px;padding:12px}.rel .ri img{height:100px;aspect-ratio:auto;border-radius:16px;padding:8px}.rel b{font-size:15px;margin-top:8px}
  .fab{display:block;position:fixed;right:16px;bottom:22px;background:#06c755;color:#fff;font-weight:900;border-radius:30px;padding:14px 20px;box-shadow:0 10px 20px rgba(6,199,85,.35);font-size:15px;z-index:30}
 }
+.plays-sec #plays{margin-top:36px}
+@media (max-width:760px){.plays-sec #plays{margin-top:22px}}
 </style></head><body>
 <div class="proto">試作版：玩法內容與 3D 尺寸為示意</div>
 <header class="top"><div class="w"><a class="logo" href="index.html"><b>聰明動</b><small>SMART FUN</small></a>
@@ -104,8 +106,7 @@ footer{text-align:center;color:#c0ab98;padding:26px;font-size:14px}
 </section>
 <svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,50 C240,0 480,90 720,45 C960,0 1200,70 1440,30 L1440,80 L0,80 Z" fill="#f2874f"/></svg>
 <section class="plays-sec" id="plays-sec"><div class="w">
- <div class="ph2"><h2>怎麼<span>玩</span>？</h2><p>挑一個今天想玩的，孩子馬上就能上手</p></div>
- <div class="pfilters" id="filters"><div class="chips" id="f-type"></div><span class="sep">｜</span><div class="chips" id="f-age"></div><div id="f-limit"></div></div>
+ <div class="ph2"><h2>怎麼<span>玩</span>？</h2><p>原來這個教具還可以這樣玩！越前面越有特色</p></div>
  <div class="plays" id="plays"></div><button id="plays-more"></button>
 </div></section>
 <section class="w rel-sec"><h2>一起玩的<span>好朋友</span></h2><div id="related"></div></section>
@@ -127,7 +128,7 @@ initItem({
     <div class="f"><i style="background:#ffeacc">🎲</i><div><small>玩法</small><b>${plays.length ? plays.length + " 種玩法" : "整理中"}</b></div></div>`,
   modeLabel: v => v.replace("雙拱＋橫桿", "彩虹梯").replace("單片拱橋", "山洞").replace("倒放搖椅", "搖搖船").replace("S 型平放", "S 小路").replace("平放＋立柱", "立柱").replace("全部零件", "零件"),
   card: c => `<article class="play"><div class="im"><img src="${c.img}" style="object-position:${c.pos}" alt="" loading="lazy"></div><span class="n">${c.n}</span>
-    <h3>${c.esc(c.pl.name)}</h3><div class="tags">${c.tags}</div><p class="in">${c.esc(c.pl.intro)}</p>
+    <h3>${c.esc(c.pl.name)}</h3><p class="in">${c.esc(c.pl.intro)}</p>
     <div class="bt">${c.see ? `<button class="see" data-mode="${c.mode}">看擺法</button>` : ""}<button class="more">完整玩法</button></div>${c.detail}</article>`,
 });
 </script>

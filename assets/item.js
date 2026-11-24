@@ -93,6 +93,7 @@ export function initItem(cfg = {}) {
       <h4>步驟</h4><ol>${pl.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
       <h4>安全提醒</h4><p>${esc(pl.safety)}</p>
       <h4>難度調整</h4><ul><li><b>簡單一點：</b>${esc(pl.easier)}</li><li><b>挑戰一點：</b>${esc(pl.harder)}</li></ul>
+      ${pl.limit.length ? `<h4>需要準備</h4><p>${pl.limit.map(esc).join("；")}</p>` : ""}
       <h4>訓練能力</h4><p>${pl.skills.join("、")}</p>
       ${pl.props.length ? `<h4>需要器材</h4><p>${pl.props.map(propLink).join("、")}</p>` : ""}</div>`;
   const cardCtx = (pl, idx) => ({ pl, i: idx, no: String(idx + 1).padStart(2, "0"), n: idx + 1,
