@@ -3,7 +3,7 @@
 <style>html,body{margin:0;background:transparent}#v{width:600px;height:600px}</style></head><body><div id="v"></div>
 <script type="module">
 // 聰明搖滾圈 3D 算圖，拱片外側面（沒有插孔那面）開口上方中央貼 SMART FUN Logo。
-// Logo 圖 assets/img/logo-smartfun.png 從商品照切出、轉正。?w=Logo 寬（模型單位，預設 24）、?y=Logo 中心高度（預設圓環中線）、?mode=、?zoom=（預設 .6，和 assets/img/rock.png 同大小）、?cam=x,y,z
+// Logo 圖 assets/img/logo-smartfun.png 取自撲克牌網站 card-spell-magic 的 smart-fun-logo.png（轉正、改深色）。?w=Logo 寬（模型單位，預設 24）、?y=Logo 中心高度（預設圓環中線）、?mode=、?zoom=（預設 .6，和 assets/img/rock.png 同大小）、?cam=x,y,z
 // 算圖完成後 window.result 是透明 PNG 的 dataURL（給 headless 存檔用）。
 import { mountRocker } from "../assets/rocker3d.js";
 const qs = new URLSearchParams(location.search);
