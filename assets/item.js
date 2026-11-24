@@ -1,8 +1,6 @@
-// 教具頁（第二層）共用程式 v2：資料、3D、篩選、展開、看擺法都在這裡；
+// 教具頁（第二層）共用程式 v3：資料、照片、篩選與玩法展開都在這裡；
 // 三個風格的 item.html 只提供各自的卡片／資訊版型（cfg 裡的函式）與 CSS。
 // 需要先載入 catalog.js（PRODUCTS、IMG、PHOTO）與 plays.js（PLAYS、PLAY_TYPES、PLAY_AGES）。
-import { mountRocker, ROCKER_MODES } from "./rocker3d.js";
-
 const $ = s => document.querySelector(s);
 export const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const set = (sel, html) => { const el = $(sel); if (el) el.innerHTML = html; return el; };
@@ -13,41 +11,32 @@ export function initItem(cfg = {}) {
   const plays = PLAYS[p.id] || [];
   const modes = p.modesInfo || [];
   document.title = `${p.name}｜聰明動 SMART FUN`;
-  const ctx = { p, plays, base, esc, modesCount: p.model === "rocker" ? Object.keys(ROCKER_MODES).length : modes.length };
+  const ctx = { p, plays, base, esc, modesCount: modes.length };
 
   // ---- 文字區 ----
   set("#crumb", `<a href="index.html#catalog">${cfg.crumbRoot || "教具系列"}</a><span>›</span><a href="index.html?cat=${encodeURIComponent(p.cat)}#catalog">${esc(p.cat)}</a><span>›</span><b>${esc(p.name)}</b>`);
   set("#name", esc(p.name)); set("#cat", esc(p.cat)); set("#desc", esc(p.desc)); set("#tagline", esc(p.tagline || ""));
-  set("#badges", (p.star ? `<span class="b-star">${cfg.starLabel || "招牌教具"}</span>` : "") + `<span>${esc(p.cat)}</span>` + (p.model ? `<span>3D 模型</span>` : ""));
+  set("#badges", (p.star ? `<span class="b-star">${cfg.starLabel || "招牌教具"}</span>` : "") + `<span>${esc(p.cat)}</span>`);
   if (cfg.facts) set("#facts", cfg.facts(ctx));
   set("#play-count", plays.length ? String(plays.length) : "");
 
-  // ---- 主視覺：3D（或照片）＋縮圖＋擺法按鈕 ----
-  const viewerEl = $("#viewer"); let viewer = null;
-  const syncModes = m => document.querySelectorAll("[data-m]").forEach(b => b.classList.toggle("on", b.dataset.m === m));
+  // ---- 主視覺：商品照＋縮圖 ----
+  const viewerEl = $("#viewer");
   if (viewerEl) {
-    if (p.model === "rocker") {
-      viewer = mountRocker(viewerEl, { bg: cfg.viewerBg, zoom: cfg.zoom, onMode: syncModes });
-      viewerEl.classList.add("is-3d");
-    } else {
-      viewerEl.innerHTML = `<img class="viewer-photo show" src="${IMG(p, base)}" alt="${esc(p.name)}" style="object-fit:contain;padding:8%">`;
-    }
+    viewerEl.innerHTML = `<img class="viewer-photo show" src="${IMG(p, base)}" alt="${esc(p.name)}">`;
   }
-  set("#modes", viewer ? Object.entries(ROCKER_MODES).map(([k, v]) => `<button data-m="${k}" class="${k === "ladder" ? "on" : ""}">${(cfg.modeLabel || (x => x))(v)}</button>`).join("") : "");
-  // 縮圖：3D＋照片，點照片在主視覺上蓋一張照片
+  set("#modes", "");
+  // 縮圖：點照片即更換主視覺
   const photos = p.photos || [];
-  if ($("#thumbs") && (viewer || photos.length)) {
-    $("#thumbs").innerHTML = (viewer ? `<button class="th on" data-ph=""><span>3D</span></button>` : "") + photos.map(src => `<button class="th" data-ph="${src}"><img src="${PHOTO(src, base)}" alt=""></button>`).join("");
-    let ov = null;
+  if ($("#thumbs") && photos.length) {
+    $("#thumbs").innerHTML = photos.map((src, i) => `<button class="th${i === 0 ? " on" : ""}" data-ph="${src}"><img src="${PHOTO(src, base)}" alt=""></button>`).join("");
     $("#thumbs").addEventListener("click", e => {
       const b = e.target.closest(".th"); if (!b) return;
       document.querySelectorAll("#thumbs .th").forEach(x => x.classList.toggle("on", x === b));
-      if (!ov) { ov = document.createElement("img"); ov.className = "viewer-photo"; viewerEl.append(ov); }
-      if (b.dataset.ph) { ov.src = PHOTO(b.dataset.ph, base); ov.classList.add("show"); } else ov.classList.remove("show");
+      const photo = viewerEl.querySelector(".viewer-photo");
+      if (photo) photo.src = PHOTO(b.dataset.ph, base);
     });
   } else if ($("#thumbs")) $("#thumbs").hidden = true;
-  const showMode = m => { if (!viewer) return; const ov = viewerEl.querySelector(".viewer-photo.show"); if (ov) { ov.classList.remove("show"); document.querySelectorAll("#thumbs .th").forEach((x, i) => x.classList.toggle("on", i === 0)); } viewer.setMode(m); };
-  document.addEventListener("click", e => { const b = e.target.closest("[data-m]"); if (b && viewer) { showMode(b.dataset.m); if (b.closest("#mode-gallery")) viewerEl.scrollIntoView({ behavior: "smooth", block: "center" }); } });
 
   // 擺法照片區
   if ($("#mode-gallery")) {
@@ -98,7 +87,7 @@ export function initItem(cfg = {}) {
       ${pl.props.length ? `<h4>需要器材</h4><p>${pl.props.map(propLink).join("、")}</p>` : ""}</div>`;
   const cardCtx = (pl, idx) => ({ pl, i: idx, no: String(idx + 1).padStart(2, "0"), n: idx + 1,
     img: pl.photo ? PHOTO(pl.photo, base) : `${base}assets/plays/${p.id}-${idx + 1}.png`, pos: pl.pos || "center",
-    tags: tagsHTML(pl), detail: detailHTML(pl), see: !!(viewer && pl.mode), mode: pl.mode, esc });
+    tags: tagsHTML(pl), detail: detailHTML(pl), see: false, mode: pl.mode, esc });
   const playsEl = $("#plays"), moreBtn = $("#plays-more");
   let collapsed = !!moreBtn;
   const showN = cfg.mobileShow || 2;
@@ -124,9 +113,8 @@ export function initItem(cfg = {}) {
   }
   if (moreBtn) moreBtn.addEventListener("click", () => { collapsed = false; draw(); });
   if (playsEl) playsEl.addEventListener("click", e => {
-    const more = e.target.closest(".more"), see = e.target.closest(".see");
+    const more = e.target.closest(".more");
     if (more) { const d = more.closest(".play").querySelector(".detail"), open = d.hidden; d.hidden = !open; more.setAttribute("aria-expanded", open); more.classList.toggle("open", open); more.textContent = open ? "收起 ▴" : (cfg.moreLabel || "完整玩法"); }
-    if (see && viewer) { showMode(see.dataset.mode); viewerEl.scrollIntoView({ behavior: "smooth", block: "center" }); }
   });
   draw();
 
@@ -138,6 +126,6 @@ export function initItem(cfg = {}) {
   set("#related", rel.map(x => (cfg.relItem || defRel)(x, IMG(x, base), ctx)).join(""));
 }
 
-const defModeItem = (mi, i, ctx) => `<button class="mg" data-m="${mi.m}"><img src="${PHOTO(mi.img, ctx.base)}" alt=""><b><i>${String(i + 1).padStart(2, "0")}</i>${esc(mi.name)}</b><small>${esc(mi.desc)}</small></button>`;
+const defModeItem = (mi, i, ctx) => `<div class="mg"><img src="${PHOTO(mi.img, ctx.base)}" alt=""><b><i>${String(i + 1).padStart(2, "0")}</i>${esc(mi.name)}</b><small>${esc(mi.desc)}</small></div>`;
 const defCombo = c => `<div><b>📋 ${esc(c.name)}</b><p>${esc(c.desc)}</p></div><button data-combo>看教案 →</button>`;
 const defRel = (x, src) => `<a class="rel" href="item.html?id=${x.id}&cat=${encodeURIComponent(x.cat)}"><span class="ri"><img src="${src}" alt="" loading="lazy"></span><b>${esc(x.name)}</b><small>${esc(x.cat)}・${esc(x.age)}</small></a>`;

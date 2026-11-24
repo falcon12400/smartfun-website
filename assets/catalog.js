@@ -3,7 +3,7 @@
 const CATS = ["平衡", "跨越", "穿越鑽爬", "投擲打擊", "認知合作"];
 
 const PRODUCTS = [
-  { id: "rock", name: "聰明搖滾圈", cat: "平衡", skills: ["動態平衡", "核心穩定", "身體控制"], age: "3–6 歲", desc: "兩片半圓拱片加上五根條紋柱，可以排成拱橋、彩虹梯、搖椅、S 型小路和立柱關卡，一套就能玩好幾週。", star: true, model: "rocker", parts: "拱片×2、六角柱×4、半圓柱×1",
+  { id: "rock", name: "聰明搖滾圈", cat: "平衡", skills: ["動態平衡", "核心穩定", "身體控制"], age: "3–6 歲", desc: "兩片半圓拱片加上五根條紋柱，可以排成拱橋、彩虹梯、搖椅、S 型小路和立柱關卡，一套就能玩好幾週。", star: true, image: "photos/rock/hero.jpg", parts: "拱片×2、六角柱×4、半圓柱×1",
     tagline: "一套拱片，變出一整個學期的遊戲",
     photos: ["rock/hero.jpg", "rock/a1.png", "rock/a3.png", "rock/a2.png", "rock/b1.png"],
     modesInfo: [
@@ -32,7 +32,7 @@ const PRODUCTS = [
   { id: "p14", name: "活力熊掌", cat: "認知合作", skills: ["空間概念", "團體遊戲"], age: "2–6 歲", desc: "熊掌造型的軟墊，可以當踏點、島嶼或關卡標記，玩法無限。" },
 ];
 
-const IMG = (p, base) => `${base}assets/img/${p.id}.png`;
+const IMG = (p, base) => p.image ? `${base}assets/${p.image}` : `${base}assets/img/${p.id}.png`;
 const PHOTO = (src, base) => `${base}assets/photos/${src}`;
 
 // 渲染：grid 容器、篩選列容器、卡片模板函式
@@ -42,7 +42,7 @@ function initCatalog({ grid, filters, card, base = "../", allLabel = "全部", c
   const draw = () => {
     const list = PRODUCTS.filter(p => cur === "全部" || p.cat === cur);
     list.forEach(p => { const n = (typeof PLAYS !== "undefined" && PLAYS[p.id] || []).length;
-      p.badges = (p.model ? '<span class="bdg bdg-3d">3D</span>' : "") + (n ? `<span class="bdg bdg-n">${n} 種玩法</span>` : ""); });
+      p.badges = n ? `<span class="bdg bdg-n">${n} 種玩法</span>` : ""; });
     g.innerHTML = list.map(p => card(p, IMG(p, base))).join("");
     // 點卡片 → 進教具頁（第二層），帶著目前分類，返回時可以回到同樣的篩選
     g.querySelectorAll("[data-id]").forEach(el => el.addEventListener("click", e => {
