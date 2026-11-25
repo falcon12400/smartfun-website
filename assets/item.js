@@ -85,9 +85,9 @@ export function initItem(cfg = {}) {
       ${pl.limit.length ? `<h4>需要準備</h4><p>${pl.limit.map(esc).join("；")}</p>` : ""}
       <h4>訓練能力</h4><p>${pl.skills.join("、")}</p>
       ${pl.props.length ? `<h4>需要器材</h4><p>${pl.props.map(propLink).join("、")}</p>` : ""}</div>`;
-  const cardCtx = (pl, idx) => ({ pl, i: idx, no: String(idx + 1).padStart(2, "0"), n: idx + 1,
-    img: pl.photo ? PHOTO(pl.photo, base) : `${base}assets/plays/${p.id}-${idx + 1}.png`, pos: pl.pos || "center",
-    tags: tagsHTML(pl), detail: detailHTML(pl), see: false, mode: pl.mode, esc });
+  const cardCtx = (pl, idx) => { const images = (pl.photos?.length ? pl.photos.map(src => PHOTO(src, base)) : [pl.photo ? PHOTO(pl.photo, base) : `${base}assets/plays/${p.id}-${idx + 1}.png`]); return ({ pl, i: idx, no: String(idx + 1).padStart(2, "0"), n: idx + 1,
+    img: images[0], images, pos: pl.pos || "center",
+    tags: tagsHTML(pl), detail: detailHTML(pl), see: false, mode: pl.mode, esc }); };
   const playsEl = $("#plays"), moreBtn = $("#plays-more");
   let collapsed = !!moreBtn;
   const showN = cfg.mobileShow || 2;
@@ -113,6 +113,27 @@ export function initItem(cfg = {}) {
   }
   if (moreBtn) moreBtn.addEventListener("click", () => { collapsed = false; draw(); });
   if (playsEl) playsEl.addEventListener("click", e => {
+    const galleryButton = e.target.closest("[data-gallery-step]");
+    if (galleryButton) {
+      const gallery = galleryButton.closest("[data-gallery]");
+      const images = [...gallery.querySelectorAll(".gallery-image")];
+      const dots = [...gallery.querySelectorAll(".gallery-dot")];
+      const current = images.findIndex(img => img.classList.contains("on"));
+      const next = (current + Number(galleryButton.dataset.galleryStep) + images.length) % images.length;
+      images.forEach((img, i) => img.classList.toggle("on", i === next));
+      dots.forEach((dot, i) => { dot.classList.toggle("on", i === next); dot.setAttribute("aria-current", i === next ? "true" : "false"); });
+      const count = gallery.querySelector(".gallery-count"); if (count) count.textContent = `${next + 1} / ${images.length}`;
+      return;
+    }
+    const galleryDot = e.target.closest(".gallery-dot");
+    if (galleryDot) {
+      const gallery = galleryDot.closest("[data-gallery]");
+      const next = Number(galleryDot.dataset.galleryIndex);
+      gallery.querySelectorAll(".gallery-image").forEach((img, i) => img.classList.toggle("on", i === next));
+      gallery.querySelectorAll(".gallery-dot").forEach((dot, i) => { dot.classList.toggle("on", i === next); dot.setAttribute("aria-current", i === next ? "true" : "false"); });
+      const count = gallery.querySelector(".gallery-count"); if (count) count.textContent = `${next + 1} / ${gallery.querySelectorAll(".gallery-image").length}`;
+      return;
+    }
     const more = e.target.closest(".more");
     if (more) { const d = more.closest(".play").querySelector(".detail"), open = d.hidden; d.hidden = !open; more.setAttribute("aria-expanded", open); more.classList.toggle("open", open); more.textContent = open ? "收起 ▴" : (cfg.moreLabel || "完整玩法"); }
   });

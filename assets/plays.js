@@ -37,7 +37,7 @@ const PLAYS = {
       steps: ["兩片拱片平放，接成 S 型。", "孩子張開雙手當翅膀，沿著拱片上面走。", "走到底跳下來，雙腳落地。"],
       safety: "跳下時膝蓋彎彎；前面的人走到一半，下一位才出發。",
       easier: "牽著老師的手走。", harder: "倒退走，或頭上頂沙包。" },
-    { name: "繞柱子", photo: "rock/real-2-posts.jpg", pos: "center 55%", type: "排隊", age: ["小幼", "中大"], limit: [], mode: "posts",
+    { name: "繞柱子", photo: "rock/real-2-posts.jpg", photos: ["rock/real-2-posts.jpg", "rock/real-2-posts-alt-1.jpg", "rock/real-2-posts-alt-2.jpg"], pos: "center 55%", type: "排隊", age: ["小幼", "中大"], limit: [], mode: "posts",
       skills: ["敏捷", "方向變換"], props: [],
       intro: "柱子插在拱片上當障礙物，孩子繞著柱子走 S 型。",
       steps: ["兩片拱片平放，四根六角柱插上去。", "孩子依序繞過每根柱子，不能碰到。", "繞完回到起點，換下一位。"],
