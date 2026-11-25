@@ -34,5 +34,5 @@
   .sf-menu-products a{padding:11px 9px;border-bottom:1px solid #f7eee7;color:#684b3b;font-size:15px}
   .sf-menu-products a:last-child{border-bottom:0}
   .sf-menu-all{font-weight:800;color:#d9552e!important}
-  .sf-menu-note{margin:16px 4px 0;padding:12px 14px;border-radius:14px;background:#fff0d2;color:#7a5a2e;font-size:13px;line-height:1.6}
+  .sf-menu-note{display:block;text-decoration:none;font-weight:700;margin:16px 4px 0;padding:12px 14px;border-radius:14px;background:#fff0d2;color:#7a5a2e;font-size:13px;line-height:1.6}
 }

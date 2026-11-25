@@ -24,7 +24,7 @@
         <div class="sf-menu-head"><div><b>聰明動</b><small>SMART FUN</small></div><button class="sf-menu-close" type="button" aria-label="關閉目錄">×</button></div>
         <nav class="sf-menu-primary" aria-label="主要頁面"><a href="${home}">首頁</a><a href="${home}#catalog">全部教具</a><a href="${contact}">聯絡我們</a></nav>
         <div class="sf-menu-label">依教具類別瀏覽</div><div class="sf-menu-cats">${categoryHTML}</div>
-        <p class="sf-menu-note">LINE 官方帳號尚在建立中，完成後會在聯絡頁公告。</p>
+        <a class="sf-menu-note" href="https://line.me/ti/p/NvVe6gwYGX" target="_blank" rel="noopener">💬 加入 LINE 好友：教具洽詢、課程合作都可以聊</a>
       </div>
     </aside>`);
 
