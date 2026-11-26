@@ -1,22 +1,27 @@
 {
-  "name": "SmartFun Firebase admin local smoke test",
+  "name": "SmartFun test database pages local smoke test",
   "viewport": { "width": 390, "height": 844 },
   "steps": [
     { "action": "goto", "url": "http://127.0.0.1:8720/admin/" },
-    { "action": "waitFor", "locator": { "text": "網站內容管理" } },
+    { "action": "waitFor", "locator": { "text": "測試資料庫管理" } },
     { "action": "click", "locator": { "text": "先看後台畫面" } },
-    { "action": "waitFor", "locator": { "text": "教具列表" } },
+    { "action": "waitFor", "locator": { "text": "器材列表" } },
     { "action": "waitFor", "locator": { "text": "聰明搖滾圈" } },
     { "action": "click", "locator": { "text": "瑪卡龍", "exact": true } },
-    { "action": "waitFor", "locator": { "selector": "input[name='name']" } },
-    { "action": "fill", "locator": { "selector": "input[name='name']" }, "value": "瑪卡龍（測試）" },
-    { "action": "waitFor", "locator": { "text": "有尚未發布的修改" } },
+    { "action": "waitFor", "locator": { "selector": "[data-product-field='name']" } },
+    { "action": "fill", "locator": { "selector": "[data-product-field='name']" }, "value": "瑪卡龍（測試）" },
+    { "action": "waitFor", "locator": { "text": "有尚未儲存的修改" } },
+    { "action": "waitFor", "locator": { "text": "玩法與關卡" } },
+    { "action": "goto", "url": "http://127.0.0.1:8720/test/index.html" },
+    { "action": "waitFor", "locator": { "text": "已連線：18 項器材、8 個關卡" } },
+    { "action": "click", "locator": { "text": "聰明搖滾圈", "exact": true } },
+    { "action": "waitFor", "locator": { "text": "推滾筒", "exact": true } },
     { "action": "goto", "url": "http://127.0.0.1:8720/g/index.html" },
     { "action": "waitFor", "locator": { "selector": "#grid .card" } },
     { "action": "waitFor", "locator": { "text": "聰明搖滾圈" } },
     { "action": "goto", "url": "http://127.0.0.1:8720/g/item.html?id=rock" },
     { "action": "waitFor", "locator": { "selector": "#viewer .viewer-photo" } },
     { "action": "waitFor", "locator": { "text": "推滾筒", "exact": true } },
-    { "action": "log", "message": "Admin preview and static public fallback both rendered successfully." }
+    { "action": "log", "message": "Admin preview, live Firebase test pages, and official static site rendered successfully." }
   ]
 }

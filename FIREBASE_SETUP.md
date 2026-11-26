@@ -1,41 +1,46 @@
-# SmartFun 網站後台：Firebase 設定
+# SmartFun 測試網站後台：Firebase 設定
 
-後台網址是 `/admin/`。尚未綁定 Firebase 時可用「先看後台畫面」測試介面，但不會儲存或改到公開網站。
+測試前台網址是 `/test/`，後台網址是 `/admin/`。正式 `/g/` 網站仍使用原本靜態資料，不會被測試後台改動。
 
-## 一次性設定
+## 使用的既有 Firebase 專案
 
-1. 在 Firebase Console 建立或選擇一個專案，新增「Web 應用程式」。
-2. 在 Authentication 啟用 **Google** 登入方式。
-3. 建立 Cloud Firestore 資料庫。
-4. 若要讓後台直接上傳圖片，再建立 Cloud Storage bucket。Firebase 自 2026-02-03 起要求使用 Cloud Storage 的專案採 Blaze 隨用隨付方案；即使使用量落在免費額度內，仍要先連結付款帳戶。未經使用者同意不要啟用。
-5. 把 Firebase Console 顯示的 `firebaseConfig` 物件貼到 `assets/firebase-config.js`，取代目前的 `null`。
-6. 在 Authentication 的授權網域加入：
-   - `falcon12400.github.io`
-   - 本機測試需要的 `localhost`
-7. 發布本資料夾的 `firestore.rules`；有啟用圖片上傳時，再發布 `storage.rules`。
-8. 管理者第一次用 Google 登入後，從 Authentication 複製該帳號的 UID；在 Firestore 手動建立：
+- Firebase 專案：`smartfunyearendparty`（既有 SmartFunYearEndParty）
+- Authentication：尚待在 Firebase Console 初始化並啟用 Google 登入
+- Realtime Database：`smartfunyearendparty-default-rtdb`
+- SmartFun 只使用：
+  - `smartfunTest/equipment`：器材、封面路徑、分類、說明與排序
+  - `smartfunTest/activities`：關卡、圖片路徑、步驟與安全提醒
+  - `smartfunAdmins/{uid}`：SmartFun 後台管理員白名單
 
-   - Collection：`admins`
-   - Document ID：該管理者 UID
-   - 欄位：`enabled`（Boolean）=`true`
+專案原有年末活動資料不會被搬移或覆寫；新的網站內容只放在 `smartfunTest/`。
 
-完成後，管理者可在後台登入。第一次發布會把網站現有的靜態教具資料匯入 `siteContent/main`；之後公開網站會優先讀取這份資料。
+## 第一次使用
+
+1. 到 `/admin/` 使用已列入 `smartfunAdmins` 的 Google 帳號登入。
+2. 若測試資料庫為空，按「匯入正式網站現有資料」。
+3. 到 `/test/` 確認器材、封面與關卡。
+4. 後續在後台修改並儲存，只會更新 `smartfunTest/`。
+
+## 圖片
+
+目前圖片檔仍放在網站的 `assets/`，資料庫保存圖片路徑或外部網址。這樣不需要 Cloud Storage，也不需要 Blaze 方案。若未來需要從手機直接上傳新圖片，再另行評估 Storage。
 
 ## 安全設計
 
-- Firebase Web 設定會出現在瀏覽器裡，這是正常設計；真正的資料權限由 Security Rules 和管理員白名單控制。
-- 公開網站只可讀 `siteContent` 和 `public/` 圖片。
-- 只有 `admins/{uid}` 中 `enabled: true` 的登入帳號可修改內容或上傳圖片。
-- 管理者無法從網站自行把別人加入白名單；白名單只能由 Firebase Console 或可信任的伺服器端工具維護。
-- 圖片上傳後會產生 400、800、1600 像素的 WebP 版本，前台直接使用 800 像素版本。
+- `smartfunTest/` 可公開讀取，供測試網站顯示。
+- 只有 `smartfunAdmins/{uid}` 值為 `true` 的 Google 登入帳號可以寫入。
+- `smartfunAdmins/` 不能由網頁自行新增或修改，只能由可信任的 Firebase 維護工具管理。
+- 專案原有的年末活動路徑維持不可公開讀寫；部署與匯入不會刪除其資料。
 
-## 發布 Rules
+## 規則位置與部署
 
-電腦目前沒有安裝 Firebase CLI。之後若要使用 CLI，先把 `.firebaserc.example` 複製成 `.firebaserc` 並填入專案 ID，再執行：
+Realtime Database 規則由 SmartFun 網站專案維護：
+
+`D:\VSCode\smartfun-website\database.rules.json`
+
+部署時明確指定既有專案：
 
 ```powershell
-firebase deploy --only firestore:rules,storage
+firebase deploy --only database --project smartfunyearendparty
 ```
-
-也可以直接在 Firebase Console 的 Firestore Rules 與 Storage Rules 頁面貼上並發布，不必安裝 CLI。
 

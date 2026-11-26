@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SmartFun 網站管理</title>
+<title>SmartFun 測試資料庫管理</title>
 <link rel="stylesheet" href="admin.css">
 </head><body>
-<header class="topbar"><a class="brand" href="../g/index.html"><b>聰明動</b><small>SMART FUN 管理後台</small></a><div class="account"><span id="account-name"></span><button id="sign-out" class="quiet" hidden>登出</button></div></header>
+<header class="topbar"><a class="brand" href="../test/index.html"><b>聰明動</b><small>SMART FUN 測試後台</small></a><div class="account"><a class="test-link" href="../test/" target="_blank">開啟測試網站</a><span id="account-name"></span><button id="sign-out" class="quiet" hidden>登出</button></div></header>
 
 <main>
   <section id="setup" class="notice" hidden>
-    <div><b>後台程式已就緒，還差 Firebase 專案設定</b><p>目前可先預覽與測試編輯畫面，不會影響公開網站。圖片上傳需要啟用 Firebase Blaze 方案，設定前不會產生費用。</p></div>
+    <div><b>目前無法連上 Firebase</b><p>仍可先預覽管理畫面。SmartFun 使用 WordFlash 既有專案中的獨立測試資料路徑，不影響字庫或正式網站。</p></div>
     <a href="../FIREBASE_SETUP.md">查看設定步驟</a>
   </section>
 
   <section id="login" class="login-card">
-    <div class="login-art">🔐</div><p class="eyebrow">SMART FUN ADMIN</p><h1>網站內容管理</h1>
-    <p>使用已加入管理員白名單的 Google 帳號登入，即可修改教具名稱、說明、圖片與顯示順序。</p>
+    <div class="login-art">🧪</div><p class="eyebrow">SMART FUN TEST ADMIN</p><h1>測試資料庫管理</h1>
+    <p>使用管理員 Google 帳號登入，管理測試網站的器材、封面、關卡、圖片路徑與顯示順序。</p>
     <button id="google-login" class="primary">使用 Google 帳號登入</button>
     <button id="preview-mode" class="quiet">先看後台畫面</button>
     <p id="login-status" class="status"></p>
@@ -21,30 +21,47 @@
 
   <section id="workspace" class="workspace" hidden>
     <aside class="sidebar">
-      <div class="side-head"><div><p class="eyebrow">教具內容</p><h2>教具列表</h2></div><span id="product-count"></span></div>
+      <div class="side-head"><div><p class="eyebrow">測試資料庫</p><h2>器材列表</h2></div><span id="product-count"></span></div>
+      <button id="new-product" type="button" class="side-add">新增器材</button>
       <div id="product-list" class="product-list"></div>
     </aside>
 
-    <form id="editor" class="editor">
-      <div class="editor-head"><div><p class="eyebrow">編輯中</p><h1 id="editor-title">選擇教具</h1></div><span id="save-state" class="save-state">尚未修改</span></div>
+    <div id="editor" class="editor">
+      <div class="editor-head"><div><p class="eyebrow">器材資料</p><h1 id="editor-title">選擇器材</h1></div><span id="save-state" class="save-state">尚未修改</span></div>
       <div class="image-field">
         <div class="image-preview"><img id="image-preview" alt="教具主圖預覽"></div>
-        <div><label class="upload"><input id="image-file" type="file" accept="image/png,image/jpeg,image/webp">更換主圖</label><p>會自動產生 400、800、1600 像素 WebP，讓手機載入更快。</p><span id="upload-status" class="status"></span></div>
+        <div><b>封面預覽</b><p>封面圖片檔先沿用網站素材；在下方填寫圖片路徑或網址，就能從資料庫控制測試頁顯示哪一張。</p><span id="upload-status" class="status"></span></div>
       </div>
       <div class="fields">
-        <label>教具名稱<input name="name" required></label>
-        <label>分類<input name="cat" list="category-list" required><datalist id="category-list"></datalist></label>
-        <label>適合年齡<input name="age"></label>
-        <label>零件說明<input name="parts"></label>
-        <label class="wide">一句特色<input name="tagline"></label>
-        <label class="wide">教具說明<textarea name="desc" rows="5"></textarea></label>
+        <label>器材名稱<input data-product-field="name" required></label>
+        <label>分類<input data-product-field="cat" list="category-list" required><datalist id="category-list"></datalist></label>
+        <label>適合年齡<input data-product-field="age"></label>
+        <label>零件說明<input data-product-field="parts"></label>
+        <label class="wide">封面路徑或網址<input data-product-field="image" placeholder="例如 photos/rock/hero.jpg"></label>
+        <label class="wide">一句特色<input data-product-field="tagline"></label>
+        <label class="wide">器材說明<textarea data-product-field="desc" rows="4"></textarea></label>
+        <label class="check"><input type="checkbox" data-product-field="star"> 招牌器材</label>
+        <label class="check"><input type="checkbox" data-product-field="active"> 在測試網站顯示</label>
       </div>
+      <section class="activity-section">
+        <div class="activity-head"><div><p class="eyebrow">關卡資料</p><h2>玩法與關卡</h2></div><button id="new-activity" type="button" class="quiet">新增關卡</button></div>
+        <div id="activity-list" class="activity-list"></div><div id="activity-empty" class="activity-empty">這項器材尚未建立關卡。</div>
+        <div id="activity-editor" class="activity-editor" hidden><div class="fields">
+          <label>關卡名稱<input data-activity-field="name"></label><label>圖片裁切位置<input data-activity-field="pos" placeholder="例如 center 55%"></label>
+          <label class="wide">關卡簡介<textarea data-activity-field="intro" rows="3"></textarea></label>
+          <label class="wide">圖片路徑（每行一張）<textarea data-activity-field="photos" rows="3" placeholder="rock/real-1.jpg"></textarea></label>
+          <label class="wide">步驟（每行一步）<textarea data-activity-field="steps" rows="4"></textarea></label>
+          <label class="wide">安全提醒<textarea data-activity-field="safety" rows="2"></textarea></label>
+          <label>簡單一點<textarea data-activity-field="easier" rows="2"></textarea></label><label>挑戰一點<textarea data-activity-field="harder" rows="2"></textarea></label>
+          <label class="check"><input type="checkbox" data-activity-field="active"> 在測試網站顯示</label>
+        </div><div class="activity-actions"><div><button id="activity-up" type="button" class="quiet">關卡往前</button><button id="activity-down" type="button" class="quiet">關卡往後</button></div><button id="remove-activity" type="button" class="danger">刪除這個關卡</button></div></div>
+      </section>
       <div class="editor-actions">
-        <div><button id="move-up" type="button" class="quiet">往前移</button><button id="move-down" type="button" class="quiet">往後移</button></div>
-        <button id="publish" type="submit" class="primary">發布到網站</button>
+        <div><button id="move-up" type="button" class="quiet">器材往前</button><button id="move-down" type="button" class="quiet">器材往後</button></div>
+        <div class="publish-actions"><button id="seed-data" type="button" class="quiet" hidden>匯入正式網站現有資料</button><button id="publish" type="button" class="primary">儲存到測試資料庫</button></div>
       </div>
       <p class="preview-note" id="preview-note" hidden>目前是預覽模式：可測試欄位與排序，但不會儲存或發布。</p>
-    </form>
+    </div>
   </section>
 </main>
 

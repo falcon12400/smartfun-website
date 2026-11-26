@@ -1,0 +1,9 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SmartFun 測試網站｜資料庫版</title><link rel="stylesheet" href="test.css"></head><body>
+<div class="testbar">測試網站 · 內容由 Firebase 測試資料庫提供，不影響正式網站</div>
+<header class="top"><div class="wrap"><a class="brand" href="index.html"><b>聰明動</b><small>SMART FUN TEST</small></a><nav><a href="../g/index.html">回正式網站</a><a class="admin" href="../admin/">管理資料</a></nav></div></header>
+<section class="hero"><div class="wrap"><span id="source" class="source"><i></i><b>正在讀取資料庫…</b></span><h1>資料庫<span>測試頁面</span></h1><p>在這裡確認後台修改後的器材、封面與關卡，不會動到老師正在分享的正式網站。</p></div></section>
+<section class="catalog"><div class="wrap"><h2>教具系列</h2><div id="filters" class="filters"></div><div id="grid" class="grid"></div></div></section><footer>© 聰明動 SMART FUN · Firebase 測試環境</footer>
+<script src="../assets/plays.js"></script><script src="../assets/catalog.js"></script><script src="../assets/firebase-config.js"></script><script src="../assets/test-data.js"></script>
+<script>SMARTFUN_TEST_READY.then(result=>{const status=document.getElementById('source');status.classList.toggle('ok',result.source==='firebase');status.querySelector('b').textContent=result.source==='firebase'?`已連線：${result.count} 項器材、${result.activityCount} 個關卡`:(result.reason==='not-configured'?'Firebase 尚未設定':'資料庫暫時無法讀取');initCatalog({grid:'#grid',filters:'#filters',card:(p,src)=>`<div class="card" data-id="${p.id}"><span class="tag">${p.cat||'未分類'}</span><div class="im"><img src="${src}" alt="${p.name}" loading="lazy"></div><h3>${p.name}</h3><p>${p.desc||''}</p></div>`});if(!PRODUCTS.length)document.getElementById('grid').innerHTML='<div class="empty"><b>測試資料庫目前沒有器材</b><br>請先到管理頁面登入並匯入現有網站資料。</div>';});</script>
+</body></html>
+

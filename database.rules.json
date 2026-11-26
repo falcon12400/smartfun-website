@@ -1,0 +1,16 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "smartfunTest": {
+      ".read": true,
+      ".write": "auth != null && root.child('smartfunAdmins').child(auth.uid).val() === true"
+    },
+    "smartfunAdmins": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": false
+      }
+    }
+  }
+}

@@ -110,13 +110,10 @@ footer{text-align:center;color:#c0ab98;padding:26px;font-size:14px}
 
 <script src="../assets/catalog.js"></script>
 <script src="../assets/plays.js"></script>
-<script src="../assets/firebase-config.js"></script>
-<script src="../assets/cloud-content.js"></script>
 <script src="../assets/mobile-nav.js"></script>
+<script>initMobileNav();</script>
 <script type="module">
 import { initItem } from "../assets/item.js";
-await SMARTFUN_CONTENT_READY;
-initMobileNav();
 const p = PRODUCTS.find(x => x.id === new URLSearchParams(location.search).get("id")) || PRODUCTS[0];
 if (!p.star) document.getElementById("star").hidden = true;
 initItem({
