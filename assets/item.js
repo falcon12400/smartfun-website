@@ -34,7 +34,7 @@ export function initItem(cfg = {}) {
       const b = e.target.closest(".th"); if (!b) return;
       document.querySelectorAll("#thumbs .th").forEach(x => x.classList.toggle("on", x === b));
       const photo = viewerEl.querySelector(".viewer-photo");
-      if (photo) photo.src = PHOTO(b.dataset.ph, base);
+      if (photo) { photo.src = PHOTO(b.dataset.ph, base); vHook(photo); }
     });
   } else if ($("#thumbs")) $("#thumbs").hidden = true;
 
@@ -85,7 +85,7 @@ export function initItem(cfg = {}) {
       ${pl.limit.length ? `<h4>需要準備</h4><p>${pl.limit.map(esc).join("；")}</p>` : ""}
       <h4>訓練能力</h4><p>${pl.skills.join("、")}</p>
       ${pl.props.length ? `<h4>需要器材</h4><p>${pl.props.map(propLink).join("、")}</p>` : ""}</div>`;
-  const cardCtx = (pl, idx) => { const images = (pl.photos?.length ? pl.photos.map(src => PHOTO(src, base)) : [pl.photo ? PHOTO(pl.photo, base) : `${base}assets/plays/${p.id}-${idx + 1}.png`]); return ({ pl, i: idx, no: String(idx + 1).padStart(2, "0"), n: idx + 1,
+  const cardCtx = (pl, idx) => { const images = (pl.photos?.length ? pl.photos.map(src => PHOTO(src, base)) : [pl.photo ? PHOTO(pl.photo, base) : V(`${base}assets/plays/${p.id}-${idx + 1}.png`)]); return ({ pl, i: idx, no: String(idx + 1).padStart(2, "0"), n: idx + 1,
     img: images[0], images, pos: pl.pos || "center",
     tags: tagsHTML(pl), detail: detailHTML(pl), see: false, mode: pl.mode, esc }); };
   const playsEl = $("#plays"), moreBtn = $("#plays-more");
