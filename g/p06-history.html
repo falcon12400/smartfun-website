@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>瑪卡龍 (p06) AI 重繪修正前後對照｜聰明動 SMART FUN</title>
+<link rel="stylesheet" href="../assets/base.css">
+<style>
+:root { --teal:#1976d2; --coral:#009688; --sun:#ffc23d; --accent:#0288d1; --radius:18px; }
+body { background:#f4fbfb; color:#2c3e50; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC",sans-serif; margin:0; padding:0; }
+.wrap { max-width:960px; margin:0 auto; padding:20px 24px 60px; }
+header { background:#fff; padding:16px 24px; box-shadow:0 2px 10px rgba(0,0,0,.05); position:sticky; top:0; z-index:10; }
+header .wrap { display:flex; align-items:center; justify-content:space-between; padding:0; }
+.logo b { font-size:24px; color:var(--teal); letter-spacing:1px; }
+.nav-links { display:flex; gap:10px; align-items:center; }
+.back-btn { background:#e1f5fe; color:var(--teal); padding:8px 18px; border-radius:20px; font-weight:700; text-decoration:none; font-size:15px; }
+.back-btn:hover { background:#b3e5fc; }
+.hero-title { text-align:center; margin:32px 0 24px; }
+.hero-title h1 { font-size:clamp(24px, 4vw, 36px); color:#1a252f; margin:0 0 10px; }
+.hero-title p { color:#607d8b; font-size:16px; margin:0; line-height:1.6; }
+
+.timeline { display:flex; flex-direction:column; gap:40px; margin-top:32px; }
+.card { background:#fff; border-radius:var(--radius); box-shadow:0 6px 20px rgba(25,118,210,.08); overflow:hidden; border:1px solid #e0f2f1; }
+.card-header { padding:18px 24px; background:#e0f7fa; border-bottom:1px solid #b2dfdb; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.card-header .badge { color:#fff; font-size:13px; font-weight:700; padding:4px 12px; border-radius:12px; }
+.card-header h2 { font-size:19px; margin:0; color:#1a252f; }
+.card-body { padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:center; }
+@media (max-width: 768px) {
+  .card-body { grid-template-columns:1fr; }
+}
+.img-box { position:relative; border-radius:12px; overflow:hidden; box-shadow:0 4px 14px rgba(0,0,0,.08); background:#fafafa; text-align:center; }
+.img-box img { width:100%; height:auto; display:block; object-fit:cover; }
+.desc { display:flex; flex-direction:column; gap:12px; font-size:15px; line-height:1.8; color:#455a64; }
+.desc strong { color:#1a252f; }
+.tag-list { display:flex; gap:8px; flex-wrap:wrap; margin-top:4px; }
+.tag { background:#eceff1; color:#546e7a; font-size:12px; padding:3px 10px; border-radius:8px; }
+.tag.success { background:#e8f5e9; color:#2e7d32; font-weight:600; }
+.tag.warn { background:#ffebee; color:#c62828; font-weight:600; }
+
+.takeaways { background:#fff; border-radius:var(--radius); border-left:6px solid var(--teal); padding:24px; margin-top:48px; box-shadow:0 4px 16px rgba(0,0,0,.05); }
+.takeaways h3 { margin:0 0 12px; color:var(--teal); font-size:20px; }
+.takeaways ul { margin:0; padding-left:20px; line-height:1.8; color:#546e7a; }
+
+.nav-bottom { display:flex; justify-content:center; gap:16px; margin-top:36px; flex-wrap:wrap; }
+.nav-bottom a { background:#fff; border:1px solid #b2dfdb; padding:12px 24px; border-radius:24px; color:var(--teal); text-decoration:none; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,.04); }
+.nav-bottom a:hover { background:#e0f7fa; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo"><b>SMART FUN</b> · AI 生圖歷程</div>
+    <div class="nav-links">
+      <a href="../#p06" class="back-btn">← 回教具首頁</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero-title">
+    <h1>瑪卡龍 (p06) AI 重繪修正前後歷程</h1>
+    <p>記錄「瑪卡龍（圓形平衡踏石）」從去背棚拍照、初版色彩漂白誤區，到雙圖鎖定寶藍色彩與平整俯視木地板的演進過程。</p>
+  </div>
+
+  <div class="timeline">
+
+    <!-- 0. 去背原照 -->
+    <div class="card">
+      <div class="card-header">
+        <h2>0. 攝影棚拍去背原照</h2>
+        <span class="badge" style="background:#78909c;">原始素材</span>
+      </div>
+      <div class="card-body">
+        <div class="img-box">
+          <img src="../assets/img/p06-history/v0-original.png" alt="去背原照" loading="lazy">
+        </div>
+        <div class="desc">
+          <div><strong>真實外觀特徵：</strong>4 塊多層夾心厚泡棉圓盤，呈 2×2 矩陣平鋪在地面。</div>
+          <div><strong>關鍵色彩配比：</strong>左上方 1 塊為鮮明搶眼的<strong>深寶藍色</strong>，其餘 3 塊為清爽明亮的<strong>薄荷淺綠色</strong>。側面具紅白藍夾層，中央帶金屬提環與 SMART FUN Logo。</div>
+          <div><strong>相機視角：</strong>約 45°~50° 中高俯角拍攝。</div>
+          <div class="tag-list">
+            <span class="tag">棚拍去背</span>
+            <span class="tag">1 藍 + 3 綠</span>
+            <span class="tag">45° 俯視</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. 初版問題 -->
+    <div class="card" style="border-color:#ffcdd2;">
+      <div class="card-header" style="background:#ffebee; border-color:#ffcdd2;">
+        <h2>1. 修正前初版：色彩嚴重漂白與斜坡滑梯感</h2>
+        <span class="badge" style="background:#e53935;">存在嚴重問題</span>
+      </div>
+      <div class="card-body">
+        <div class="img-box">
+          <img src="../assets/img/p06-history/v1-bleached-before.png" alt="修正前初版" loading="lazy">
+        </div>
+        <div class="desc">
+          <div><strong>問題一（色彩漂白）：</strong>左上方原本應為深寶藍色的圓盤，被 AI 漂白成<strong>暗灰粉紫肉色</strong>（RGB 205, 191, 198），完全失真！</div>
+          <div><strong>問題二（滑梯透視）：</strong>木地板透視線過度急遽向遠方匯聚，使地面看起來像前傾的斜坡，後排圓盤像要順著滑梯溜下來。</div>
+          <div><strong>問題三（陰影懸空）：</strong>圓盤底緣缺少環境遮蔽（AO）深色接觸陰影，像浮貼的貼紙，缺乏 10cm 厚泡棉實體重量感。</div>
+          <div class="tag-list">
+            <span class="tag warn">藍色漂白變粉灰</span>
+            <span class="tag warn">斜坡溜滑梯感</span>
+            <span class="tag warn">底部接觸陰影薄弱</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 定案版 -->
+    <div class="card" style="border-color:#c8e6c9;">
+      <div class="card-header" style="background:#e8f5e9; border-color:#c8e6c9;">
+        <h2>2. 修正後定案版：雙圖鎖定寶藍與平平整整木地板</h2>
+        <span class="badge" style="background:#43a047;">定案發布版</span>
+      </div>
+      <div class="card-body">
+        <div class="img-box">
+          <img src="../assets/img/p06-history/v2-vibrant-final.png" alt="修正後定案版" loading="lazy">
+        </div>
+        <div class="desc">
+          <div><strong>色彩精準還原：</strong>採用雙圖參考，嚴格強制約束色彩——左上方深寶藍色飽滿濃郁，其餘三塊薄荷綠清爽明亮，紅藍側夾層與中心金屬環清晰可辨！</div>
+          <div><strong>平整俯視透視：</strong>相機維持 45° 俯角，消除斜坡透視線，整面自然溫潤的淺色橡木地板平整鋪展。</div>
+          <div><strong>扎實接觸陰影：</strong>圓盤下方帶有深沉自然的環境遮蔽陰影，厚重穩固壓在地面上，物理重量感十足。</div>
+          <div class="tag-list">
+            <span class="tag success">深寶藍飽滿飽和</span>
+            <span class="tag success">45° 平整無滑梯感</span>
+            <span class="tag success">厚實接觸陰影</span>
+            <span class="tag success">2048x2048 高解析</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="takeaways">
+    <h3>💡 AI 重繪關鍵經驗總結</h3>
+    <ul>
+      <li><strong>色彩多樣性保護：</strong>當教具包含不同色塊（如本例 1 藍 + 3 綠）時，AI 容易偷懶將色彩均質化或錯誤互染。必須在提示詞中明確指派<strong>「每個方位的獨立色相」</strong>，並嚴禁漂白。</li>
+      <li><strong>俯拍地面透視：</strong>平鋪在地板上的教具，視野應全部由平整地面覆蓋，切忌強加急遽匯聚的牆面或透視線，以避免視覺產生「斜坡溜滑梯」的失重感。</li>
+      <li><strong>重量感來自接觸面：</strong>實體物件壓在地面上，底緣必有 2–5mm 極深之環境遮蔽（AO）陰影，此接觸陰影是破除「AI 浮空假圖感」的最關鍵細節。</li>
+    </ul>
+  </div>
+
+  <div class="nav-bottom">
+    <a href="p01-history.html">← 查看 U型槓片 (p01) 歷程</a>
+    <a href="../#p06">查看教具清單首頁</a>
+    <a href="p05-history.html">查看 瑜伽滾筒 (p05) 歷程 →</a>
+  </div>
+</main>
+
+</body>
+</html>
