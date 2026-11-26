@@ -32,8 +32,30 @@ const PRODUCTS = [
   { id: "p14", name: "活力熊掌", cat: "認知合作", skills: ["空間概念", "團體遊戲"], age: "2–6 歲", desc: "熊掌造型的軟墊，可以當踏點、島嶼或關卡標記，玩法無限。" },
 ];
 
-const IMG = (p, base) => p.image ? `${base}assets/${p.image}` : `${base}assets/img/${p.id}.png`;
-const PHOTO = (src, base) => `${base}assets/photos/${src}`;
+// 圖片加速：網頁一律先載壓縮小圖（assets/v/…-s.webp，寬 400），載完再依實際顯示大小換成 -m（800）或 -l（1600）。
+// 手機只會換到 m；找不到壓縮版時自動改載原圖。壓縮版用 node _tools/make-variants.mjs 產生。
+const V_ORIG = new Map();
+const V_KEY = u => new URL(u, location.href).href.replace(/-[sml]\.webp$/, "");
+const V = url => { const m = url.match(/^(.*assets\/)(.+)\.(png|jpe?g)$/i); if (!m) return url;
+  const v = `${m[1]}v/${m[2]}-s.webp`; V_ORIG.set(V_KEY(v), url); return v; };
+const IMG = (p, base) => V(p.image ? `${base}assets/${p.image}` : `${base}assets/img/${p.id}.png`);
+const PHOTO = (src, base) => V(`${base}assets/photos/${src}`);
+(() => {
+  const want = img => { const w = (img.clientWidth || img.parentElement?.clientWidth || innerWidth / 2) * (devicePixelRatio || 1);
+    return w <= 420 ? "s" : w <= 900 ? "m" : "l"; };
+  const up = img => { const s = img.currentSrc || img.src; if (img.dataset.vUp || !/\/assets\/v\/.+-s\.webp$/.test(s)) return;
+    img.dataset.vUp = 1; const k = want(img); if (k === "s") return;
+    const big = s.replace(/-s\.webp$/, `-${k}.webp`), pre = new Image();
+    pre.onload = () => { img.src = big; }; pre.src = big; };
+  const hook = img => { if (img.complete && img.naturalWidth) up(img); else img.addEventListener("load", () => up(img), { once: true }); };
+  // 壓縮版不存在 → 改載原圖
+  document.addEventListener("error", e => { const t = e.target; if (t.tagName !== "IMG" || t.dataset.vFb || !t.src.includes("/assets/v/")) return;
+    const o = t.dataset.orig || V_ORIG.get(V_KEY(t.src)); if (o) { t.dataset.vFb = 1; t.src = o; } }, true);
+  const scan = root => { if (root.tagName === "IMG") hook(root); root.querySelectorAll?.("img").forEach(hook); };
+  new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => n.nodeType === 1 && scan(n)))).observe(document.documentElement, { childList: true, subtree: true });
+  addEventListener("DOMContentLoaded", () => scan(document));
+  window.vHook = img => { delete img.dataset.vUp; hook(img); };
+})();
 
 // 渲染：grid 容器、篩選列容器、卡片模板函式
 function initCatalog({ grid, filters, card, base = "../", allLabel = "全部", countEl }) {
