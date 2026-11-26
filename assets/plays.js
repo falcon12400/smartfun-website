@@ -59,3 +59,5 @@ const PLAYS = {
       easier: "老師在旁邊協助扶著手把引導方向與速度。", harder: "推著風火輪繞過角標走 S 型，或加快爬行速度。" },
   ],
 };
+
+window.SMARTFUN_PLAYS = PLAYS;

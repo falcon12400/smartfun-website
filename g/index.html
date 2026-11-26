@@ -87,10 +87,14 @@ footer{text-align:center;color:#999;font-size:13px;padding:22px}
 
 <script src="../assets/plays.js"></script>
 <script src="../assets/catalog.js"></script>
+<script src="../assets/firebase-config.js"></script>
+<script src="../assets/cloud-content.js"></script>
 <script src="../assets/mobile-nav.js"></script>
 <script>
-initCatalog({grid:"#grid",filters:"#filters",card:(p,src)=>
- `<div class="card" data-id="${p.id}"><span class="tag">${p.cat}</span>${p.star?'<span class="star">招牌</span>':''}<div class="im"><img src="${src}" alt="${p.name}" loading="lazy"></div><h3>${p.name}</h3><p>${p.desc}</p><div class="bdgs" style="justify-content:flex-start">${p.badges||""}</div></div>`});
-initMobileNav();
+SMARTFUN_CONTENT_READY.then(() => {
+  initCatalog({grid:"#grid",filters:"#filters",card:(p,src)=>
+   `<div class="card" data-id="${p.id}"><span class="tag">${p.cat}</span>${p.star?'<span class="star">招牌</span>':''}<div class="im"><img src="${src}" alt="${p.name}" loading="lazy"></div><h3>${p.name}</h3><p>${p.desc}</p><div class="bdgs" style="justify-content:flex-start">${p.badges||""}</div></div>`});
+  initMobileNav();
+});
 </script>
 </body></html>
