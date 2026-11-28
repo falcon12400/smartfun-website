@@ -51,7 +51,7 @@ const PLAYS = {
       easier: "小幼可以用走的彎腰鑽過。", harder: "中大改成倒退爬，或爬過去時不能碰到拱片。" },
   ],
   p06: [
-    { name: "推推風火輪", photos: ["p06/real-1-roll.jpg", "p06/real-1-roll-front.jpg"], pos: "center 50%", type: "排隊", age: ["小幼", "中大"], limit: [],
+    { name: "推推風火輪", photo: "p06/real-1-roll-front.jpg", pos: "center 50%", type: "排隊", age: ["小幼", "中大"], limit: [],
       skills: ["上肢推力", "跪爬前進", "手眼協調"], props: ["體能短桿"],
       intro: "一個厚瑪卡龍（或兩片薄的疊在一起）中心穿入短桿變成滾輪，孩子雙手扶著手把向前跪爬推動衝刺。",
       steps: ["老師將短桿穿入厚瑪卡龍（或疊好的兩片薄瑪卡龍）中心孔，組成風火輪。", "孩子雙手扶住手把，跪在地板上向前推動。", "推到終點後繞過標誌物再推回起點交棒。"],
